@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:super_validation/super_validation.dart';
 import 'package:super_validation/text_form_field.dart';
 
 import 'test_bloc/test_bloc.dart';
@@ -81,42 +82,60 @@ class TestContent extends StatelessWidget {
                   ));
             },
           ),
-        ],
-      ),
-      body: ListView(
-        children: [
-          const Text('Test'),
-          BlocBuilder<TestBloc, TestState>(
-            builder: (context, state) {
-              if (state is TextStringS) {
-                return Column(
-                  children: [
-                    Text('Text: ${state.text}'),
-                    Text('Validation: ${state.validation}'),
-                  ],
-                );
-              }
-              return const Text('No text');
+          SizedBox(
+            width: 10,
+          ),
+          FloatingActionButton(
+            child: Icon(Icons.run_circle),
+            onPressed: () {
+              context.read<TestBloc>().add(TestInitializeE());
             },
           ),
-          TextFieldSuperValidation(
-            superValidation: context.read<TestBloc>().validation,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-          ),
-          StreamBuilder<bool>(
-              stream: context.read<TestBloc>().validation.streamIsValid,
-              initialData: true,
-              builder: (context, snapshot) {
-                final isValid = !(snapshot.data ?? true);
-                return TextButton(
-                    onPressed: isValid
-                        ? () {
-                            print('Test');
-                          }
-                        : null,
-                    child: Text('Test'));
-              }),
         ],
+      ),
+      body: BlocBuilder<TestBloc, TestState>(
+        buildWhen: (previous, current) =>
+            previous.runtimeType != current.runtimeType,
+        builder: (context, state) {
+          if (state is TestLoading) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return ListView(
+            children: [
+              const Text('Test'),
+              BlocBuilder<TestBloc, TestState>(
+                builder: (context, state) {
+                  if (state is TextStringS) {
+                    return Column(
+                      children: [
+                        Text('Text: ${state.text}'),
+                        Text('Validation: ${state.validation}'),
+                      ],
+                    );
+                  }
+                  return const Text('No text');
+                },
+              ),
+              TextFieldSuperValidation(
+                superValidation: context.read<TestBloc>().validation,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+              ),
+              SuperValidationBuilder(
+                  superValidation: context.read<TestBloc>().validation,
+                  builder: (context, validation, isValid) {
+                    return TextButton(
+                        onPressed: isValid
+                            ? () {
+                                print('Test');
+                              }
+                            : null,
+                        child: Text('Test'));
+                  }),
+            ],
+          );
+        },
       ),
     );
   }

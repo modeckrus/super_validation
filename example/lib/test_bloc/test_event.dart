@@ -34,3 +34,7 @@ class TestSetTextE extends TestEvent {
   @override
   List<Object?> get props => [text];
 }
+
+class TestInitializeE extends TestEvent {
+  const TestInitializeE();
+}

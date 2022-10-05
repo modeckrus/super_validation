@@ -8,10 +8,11 @@ part 'test_event.dart';
 part 'test_state.dart';
 
 class TestBloc extends Bloc<TestEvent, TestState> {
-  TestBloc() : super(TestInitial()) {
+  TestBloc() : super(TestLoading()) {
     on<TestTextE>(_text);
     on<TestValidateE>(_validate);
     on<TestSetTextE>(_setText);
+    on<TestInitializeE>(_initialize);
     validation.stream.listen(_listenStream);
   }
   final SuperValidation validation = SuperValidation((value) {
@@ -35,5 +36,10 @@ class TestBloc extends Bloc<TestEvent, TestState> {
 
   FutureOr<void> _setText(TestSetTextE event, Emitter<TestState> emit) {
     validation.text = event.text;
+  }
+
+  FutureOr<void> _initialize(TestInitializeE event, Emitter<TestState> emit) {
+    validation.text = 'Initial text';
+    emit(TextStringS(validation.text, validation.validation));
   }
 }

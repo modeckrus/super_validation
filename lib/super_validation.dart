@@ -6,6 +6,7 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 
 export 'text_form_field.dart';
+export 'validation_builder.dart';
 
 typedef ValidationFunc = String? Function(String? value);
 
@@ -15,10 +16,7 @@ class SuperValidation {
   final ValidationFunc validationFunc;
   final String initalText;
 
-  SuperValidation(this.validationFunc, {this.initalText = ''}) {
-    _controller.stream.listen(_listenText);
-  }
-
+  SuperValidation(this.validationFunc, {this.initalText = ''});
   bool get isValid => validation == null;
 
   String? validation;
@@ -40,9 +38,9 @@ class SuperValidation {
   }
 
   void controllerSetText(String text) {
-    this._text = text;
-    _controller.add(
-        SuperValidationHelper(text: text, validation: validationFunc(text)));
+    _text = text;
+    validation = validationFunc(text);
+    _controller.add(SuperValidationHelper(text: text, validation: validation));
   }
 
   void validate(String? value) {
@@ -50,12 +48,9 @@ class SuperValidation {
     _controller.add(SuperValidationHelper(text: _text, validation: value));
   }
 
-  void _listenText(SuperValidationHelper event) {
-    validation = validationFunc(event.validation);
-  }
-
-  void set text(String text) {
+  set text(String text) {
     _text = text;
+    validation = validationFunc(text);
     _textFieldController.add(text);
   }
 

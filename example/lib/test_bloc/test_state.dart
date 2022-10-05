@@ -7,7 +7,7 @@ abstract class TestState extends Equatable {
   List<Object?> get props => [];
 }
 
-class TestInitial extends TestState {}
+class TestLoading extends TestState {}
 
 class TextStringS extends TestState {
   final String text;

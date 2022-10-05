@@ -506,8 +506,9 @@ class _TextFieldSuperValidationState extends State<TextFieldSuperValidation> {
 
   @override
   void initState() {
-    controller.addListener(_onControllerChanged);
     super.initState();
+    controller.text = superValidation.text;
+    controller.addListener(_onControllerChanged);
     superValidation.streamValidation.listen(_listenValidation);
     superValidation.textFieldStream.listen(_listenTextField);
   }
