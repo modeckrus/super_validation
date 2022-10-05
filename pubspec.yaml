@@ -1,6 +1,6 @@
 name: super_validation
-description: A new Flutter package project.
-version: 0.0.1
+description: Validation For bloc
+version: 0.0.2
 homepage: https://github.com/modeckrus/super_validation
 
 environment:
