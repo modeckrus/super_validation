@@ -1,7 +1,7 @@
 name: super_validation
 description: A new Flutter package project.
 version: 0.0.1
-homepage:
+homepage: https://github.com/modeckrus/super_validation
 
 environment:
   sdk: '>=2.18.2 <3.0.0'
