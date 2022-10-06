@@ -7,6 +7,8 @@ import 'dart:ui' as ui show BoxHeightStyle, BoxWidthStyle;
 
 import 'package:super_validation/super_validation.dart';
 
+import 'super_validation_string.dart';
+
 class TextFieldSuperValidation extends StatefulWidget {
   final SuperValidation superValidation;
   const TextFieldSuperValidation({

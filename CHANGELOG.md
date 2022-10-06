@@ -1,5 +1,8 @@
 ## 0.0.4
 
+* Fix bugs
+## 0.0.4
+
 * Add SuperValidationStream
 * Add SuperValidationMultyBuilder
 * Add SuperValidationSimpleMultyBuilder

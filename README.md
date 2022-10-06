@@ -98,3 +98,47 @@ superValidationStream.streamValidation.listen((event) {
     print('Validations: $event');
 });
 ```
+
+Custom Validation Example
+```dart
+class SuperValidationFile extends SuperValidationA {
+  SuperValidationFile() {
+    validate();
+  }
+  void validate() {
+    if (files.length != 2) {
+      validation = 'You need to add 2 files';
+    } else {
+      validation = null;
+    }
+  }
+
+  final StreamController<String?> _streamController =
+      StreamController.broadcast();
+  @override
+  Stream<bool> get streamIsValid =>
+      _streamController.stream.map((event) => event == null);
+
+  @override
+  Stream<String?> get streamValidation => _streamController.stream;
+  String? _validation;
+  @override
+  String? get validation => _validation;
+  set validation(String? value) {
+    _validation = value;
+    _streamController.add(value);
+  }
+
+  List<FileManaged> _files = [];
+  List<FileManaged> get files => [..._files];
+  void addFile(FileManaged file) {
+    _files.add(file);
+    validate();
+  }
+
+  void removeFile(FileManaged file) {
+    _files.remove(file);
+    validate();
+  }
+}
+```

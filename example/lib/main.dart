@@ -91,6 +91,18 @@ class TestContent extends StatelessWidget {
               context.read<TestBloc>().add(TestInitializeE());
             },
           ),
+          SizedBox(
+            width: 10,
+          ),
+          FloatingActionButton(
+            child: Icon(Icons.file_copy),
+            onPressed: () {
+              context
+                  .read<TestBloc>()
+                  .fileValidation
+                  .addFile(FileManaged(id: 'id', path: 'path'));
+            },
+          ),
         ],
       ),
       body: BlocBuilder<TestBloc, TestState>(
@@ -108,6 +120,7 @@ class TestContent extends StatelessWidget {
                   superValidation: {
                     'string': context.read<TestBloc>().stringValidation,
                     'number': context.read<TestBloc>().numberValidation,
+                    'file': context.read<TestBloc>().fileValidation,
                   },
                   builder: (context, validation, isValid) {
                     return Text(
@@ -154,6 +167,7 @@ class TestContent extends StatelessWidget {
                   superValidation: [
                     context.read<TestBloc>().numberValidation,
                     context.read<TestBloc>().stringValidation,
+                    context.read<TestBloc>().fileValidation,
                   ])
             ],
           );

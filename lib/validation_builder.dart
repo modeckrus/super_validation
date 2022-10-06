@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:super_validation/super_validation.dart';
 
+import 'super_validation_a.dart';
+import 'super_validation_stream.dart';
+
 typedef SuperValidationBuilderFunc = Widget Function(
     BuildContext context, String? validation, bool isValid);
 
 class SuperValidationBuilder extends StatelessWidget {
-  final SuperValidation superValidation;
+  final SuperValidationA superValidation;
   final SuperValidationBuilderFunc builder;
   const SuperValidationBuilder(
       {super.key, required this.superValidation, required this.builder});
@@ -26,7 +29,7 @@ typedef SuperValidationSimpleMultyBuilderFunc = Widget Function(
 
 class SuperValidationSimpleMultyBuilder extends StatelessWidget {
   final SuperValidationSimpleMultyBuilderFunc builder;
-  final List<SuperValidation> superValidation;
+  final List<SuperValidationA> superValidation;
   late final SuperValidationStream superValidationStream =
       SuperValidationStream(superValidationMap: superValidation.asMap());
   SuperValidationSimpleMultyBuilder(
@@ -47,7 +50,7 @@ typedef SuperValidationMultyBuilderFunc<T> = Widget Function(
     BuildContext context, Map<T, String?> validation, bool isValid);
 
 class SuperValidationMultyBuilder<T> extends StatelessWidget {
-  final Map<T, SuperValidation> superValidation;
+  final Map<T, SuperValidationA> superValidation;
   final SuperValidationMultyBuilderFunc<T> builder;
 
   SuperValidationMultyBuilder(
