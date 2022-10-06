@@ -13,9 +13,27 @@ class TestBloc extends Bloc<TestEvent, TestState> {
     on<TestValidateE>(_validate);
     on<TestSetTextE>(_setText);
     on<TestInitializeE>(_initialize);
-    validation.stream.listen(_listenStream);
+    numberStream.listen(_listenNumber);
+    stringValidation.stream.listen(_listenStream);
   }
-  final SuperValidation validation = SuperValidation((value) {
+  final SuperValidation numberValidation = SuperValidation((value) {
+    final number = int.tryParse(value ?? '') ?? 0;
+    if (number == 0) {
+      return 'Enter number';
+    }
+    return null;
+  });
+
+  Stream<int> get numberStream => numberValidation.stream.map((event) {
+        //Remove all non digits
+        final String digits = event.replaceAll(RegExp(r'\D'), '');
+        if (digits.isEmpty) {
+          return 0;
+        }
+        return int.tryParse(digits) ?? 0;
+      });
+
+  final SuperValidation stringValidation = SuperValidation((value) {
     if (value == null || value.isEmpty) {
       return 'Please enter some text';
     }
@@ -26,20 +44,28 @@ class TestBloc extends Bloc<TestEvent, TestState> {
     emit(TextStringS(event.text, event.validation));
   }
 
+  String currentText = '';
+
   void _listenStream(String event) {
-    add(TestTextE(text: event, validation: validation.validation));
+    currentText = event;
+    add(TestTextE(text: event, validation: numberValidation.validation));
   }
 
   FutureOr<void> _validate(TestValidateE event, Emitter<TestState> emit) {
-    validation.validate(event.validation);
+    stringValidation.validate(event.validation);
   }
 
   FutureOr<void> _setText(TestSetTextE event, Emitter<TestState> emit) {
-    validation.text = event.text;
+    stringValidation.text = event.text;
   }
 
   FutureOr<void> _initialize(TestInitializeE event, Emitter<TestState> emit) {
-    validation.text = 'Initial text';
-    emit(TextStringS(validation.text, validation.validation));
+    stringValidation.text = 'Initial text';
+    emit(TextStringS(numberValidation.text, numberValidation.validation));
+  }
+
+  int number = 0;
+  void _listenNumber(int event) {
+    number = event;
   }
 }

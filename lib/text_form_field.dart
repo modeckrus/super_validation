@@ -66,7 +66,6 @@ class TextFieldSuperValidation extends StatefulWidget {
     this.scribbleEnabled = true,
     this.enableIMEPersonalizedLearning = true,
     this.onWillPop,
-    this.autovalidateMode = AutovalidateMode.disabled,
   })  : smartDashesType = smartDashesType ??
             (obscureText ? SmartDashesType.disabled : SmartDashesType.enabled),
         smartQuotesType = smartQuotesType ??
@@ -484,12 +483,6 @@ class TextFieldSuperValidation extends StatefulWidget {
   ///    back button.
   final WillPopCallback? onWillPop;
 
-  /// Used to enable/disable form fields auto validation and update their error
-  /// text.
-  ///
-  /// {@macro flutter.widgets.FormField.autovalidateMode}
-  final AutovalidateMode autovalidateMode;
-
   @override
   State<TextFieldSuperValidation> createState() =>
       _TextFieldSuperValidationState();
@@ -502,7 +495,6 @@ class _TextFieldSuperValidationState extends State<TextFieldSuperValidation> {
       widget.controller ?? TextEditingController();
   SuperValidation get superValidation => widget.superValidation;
   late FocusNode focusNode = widget.focusNode ?? FocusNode();
-  String? validation;
 
   @override
   void initState() {
@@ -526,10 +518,7 @@ class _TextFieldSuperValidationState extends State<TextFieldSuperValidation> {
   }
 
   void _listenValidation(String? event) {
-    if (!mounted) return;
-    setState(() {
-      validation = event;
-    });
+    _formKey.currentState?.validate();
   }
 
   final _formKey = GlobalKey<FormState>();
@@ -537,12 +526,11 @@ class _TextFieldSuperValidationState extends State<TextFieldSuperValidation> {
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
-      autovalidateMode: widget.autovalidateMode,
       onWillPop: widget.onWillPop,
       child: TextFormField(
         key: widget.key,
         validator: (_) {
-          return validation;
+          return superValidation.validation;
         },
         controller: controller,
         focusNode: focusNode,

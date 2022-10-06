@@ -104,7 +104,19 @@ class TestContent extends StatelessWidget {
           }
           return ListView(
             children: [
-              const Text('Test'),
+              SuperValidationMultyBuilder(
+                  superValidation: {
+                    'string': context.read<TestBloc>().stringValidation,
+                    'number': context.read<TestBloc>().numberValidation,
+                  },
+                  builder: (context, validation, isValid) {
+                    return Text(
+                      validation.isEmpty ? 'Valid' : validation.toString(),
+                      style: TextStyle(
+                        color: isValid ? Colors.green : Colors.red,
+                      ),
+                    );
+                  }),
               BlocBuilder<TestBloc, TestState>(
                 builder: (context, state) {
                   if (state is TextStringS) {
@@ -119,20 +131,30 @@ class TestContent extends StatelessWidget {
                 },
               ),
               TextFieldSuperValidation(
-                superValidation: context.read<TestBloc>().validation,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
+                superValidation: context.read<TestBloc>().numberValidation,
+                keyboardType: TextInputType.number,
               ),
-              SuperValidationBuilder(
-                  superValidation: context.read<TestBloc>().validation,
-                  builder: (context, validation, isValid) {
-                    return TextButton(
-                        onPressed: isValid
-                            ? () {
-                                print('Test');
-                              }
-                            : null,
-                        child: Text('Test'));
-                  }),
+              TextFieldSuperValidation(
+                superValidation: context.read<TestBloc>().stringValidation,
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              SuperValidationSimpleMultyBuilder(
+                  builder: (context, isValid) {
+                    return ElevatedButton(
+                      onPressed: isValid
+                          ? () {
+                              print('onPressed');
+                            }
+                          : null,
+                      child: Text('Validate'),
+                    );
+                  },
+                  superValidation: [
+                    context.read<TestBloc>().numberValidation,
+                    context.read<TestBloc>().stringValidation,
+                  ])
             ],
           );
         },
