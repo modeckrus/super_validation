@@ -50,7 +50,7 @@ class SuperValidationFile extends SuperValidationA {
     _streamController.add(value);
   }
 
-  List<FileManaged> _files = [];
+  final List<FileManaged> _files = [];
   List<FileManaged> get files => [..._files];
   void addFile(FileManaged file) {
     _files.add(file);
@@ -90,7 +90,7 @@ class TestBloc extends Bloc<TestEvent, TestState> {
       });
 
   final SuperValidation stringValidation = SuperValidation((value) {
-    if (value == null || value.isEmpty) {
+    if (value.isEmpty) {
       return 'Please enter some text';
     }
     return null;

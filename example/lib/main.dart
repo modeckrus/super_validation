@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:super_validation/super_validation.dart';
-import 'package:super_validation/text_form_field.dart';
 
 import 'test_bloc/test_bloc.dart';
 
@@ -38,7 +37,7 @@ class MyHomePage extends StatelessWidget {
         appBar: AppBar(
           title: Text(title),
         ),
-        body: TestProvider());
+        body: const TestProvider());
   }
 }
 
@@ -64,43 +63,43 @@ class TestContent extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           FloatingActionButton(
-            child: Icon(Icons.error),
+            child: const Icon(Icons.error),
             onPressed: () {
-              context.read<TestBloc>().add(TestValidateE(
+              context.read<TestBloc>().add(const TestValidateE(
                     validation: 'test',
                   ));
             },
           ),
-          SizedBox(
+          const SizedBox(
             width: 10,
           ),
           FloatingActionButton(
-            child: Icon(Icons.edit),
+            child: const Icon(Icons.edit),
             onPressed: () {
-              context.read<TestBloc>().add(TestSetTextE(
+              context.read<TestBloc>().add(const TestSetTextE(
                     text: 'text',
                   ));
             },
           ),
-          SizedBox(
+          const SizedBox(
             width: 10,
           ),
           FloatingActionButton(
-            child: Icon(Icons.run_circle),
+            child: const Icon(Icons.run_circle),
             onPressed: () {
-              context.read<TestBloc>().add(TestInitializeE());
+              context.read<TestBloc>().add(const TestInitializeE());
             },
           ),
-          SizedBox(
+          const SizedBox(
             width: 10,
           ),
           FloatingActionButton(
-            child: Icon(Icons.file_copy),
+            child: const Icon(Icons.file_copy),
             onPressed: () {
               context
                   .read<TestBloc>()
                   .fileValidation
-                  .addFile(FileManaged(id: 'id', path: 'path'));
+                  .addFile(const FileManaged(id: 'id', path: 'path'));
             },
           ),
         ],
@@ -110,7 +109,7 @@ class TestContent extends StatelessWidget {
             previous.runtimeType != current.runtimeType,
         builder: (context, state) {
           if (state is TestLoading) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }
@@ -150,7 +149,7 @@ class TestContent extends StatelessWidget {
               TextFieldSuperValidation(
                 superValidation: context.read<TestBloc>().stringValidation,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               SuperValidationSimpleMultyBuilder(
@@ -161,7 +160,7 @@ class TestContent extends StatelessWidget {
                               print('onPressed');
                             }
                           : null,
-                      child: Text('Validate'),
+                      child: const Text('Validate'),
                     );
                   },
                   superValidation: [
