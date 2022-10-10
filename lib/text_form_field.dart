@@ -604,7 +604,7 @@ class _TextFieldSuperValidationState extends State<TextFieldSuperValidation> {
           ),
           (TextEditingValue newValue, TextInputFormatter formatter) {
             final result =
-                formatter.formatEditUpdate(const TextEditingValue(), newValue);
+                formatter.formatEditUpdate(controller.value, newValue);
             return result;
           },
         ) ??

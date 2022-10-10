@@ -156,7 +156,7 @@ class TestContent extends StatelessWidget {
                   labelText: 'Number',
                   suffix: IconButton(
                       onPressed: () {
-                        context.read<TestBloc>().numberValidation.text = '0';
+                        context.read<TestBloc>().numberValidation.text = '4.0';
                       },
                       icon: const Icon(Icons.clear)),
                 ),
