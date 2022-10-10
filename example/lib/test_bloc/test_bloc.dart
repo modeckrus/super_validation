@@ -94,7 +94,7 @@ class TestBloc extends Bloc<TestEvent, TestState> {
     max: 10,
     minMessage: 'Min 0',
     maxMessage: 'Max 10',
-  );
+  )..text = '1';
 
   final SuperValidation stringValidation = SuperValidation((value) {
     if (value.isEmpty) {
@@ -113,8 +113,13 @@ class TestBloc extends Bloc<TestEvent, TestState> {
       'file': fileValidation,
     },
   );
-  final SuperValidationEnum<TestEnum> enumValidation = SuperValidationEnum()
-    ..validation = 'Выберите один из пунктов';
+  final SuperValidationEnum<TestEnum> enumValidation =
+      SuperValidationEnum(validateFunc: (value) {
+    if (value == null) {
+      return 'Выберите один из пунктов';
+    }
+    return null;
+  });
 
   FutureOr<void> _text(TestTextE event, Emitter<TestState> emit) {
     emit(TextStringS(event.text, event.validation));
@@ -123,7 +128,6 @@ class TestBloc extends Bloc<TestEvent, TestState> {
   String currentText = '';
 
   void _listenStream(String event) {
-    numberValidation.validation = 'Неправельный Инн';
     add(TestTextE(text: event, validation: numberValidation.validation));
   }
 

@@ -2,7 +2,25 @@ import 'dart:async';
 
 import 'super_validation_a.dart';
 
+typedef SuperValidationEnumFunc<T> = String? Function(T? value);
+
 class SuperValidationEnum<T> extends SuperValidationA {
+  final SuperValidationEnumFunc<T>? validateFunc;
+  SuperValidationEnum({
+    this.validateFunc,
+  }) {
+    if (validateFunc != null) {
+      _streamSubscription = streamValue.listen((event) {
+        validation = validateFunc!(event);
+      });
+      validation = validateFunc!(value);
+    }
+  }
+  StreamSubscription<T?>? _streamSubscription;
+  Future<void> dispose() async {
+    await _streamSubscription?.cancel();
+  }
+
   @override
   String? get validation => _validation;
   @override

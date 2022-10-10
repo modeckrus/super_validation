@@ -1,4 +1,5 @@
 import 'package:example/utils/percent_input_formatter.dart';
+import 'package:example/utils/zero_input_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:super_validation/super_validation.dart';
@@ -149,6 +150,7 @@ class TestContent extends StatelessWidget {
                 keyboardType: TextInputType.number,
                 inputFormatters: [
                   PercentInputFormatter(defaultValue: 0, mantissaLength: 1),
+                  ZeroPercentFormatter()
                 ],
               ),
               TextFieldSuperValidation(

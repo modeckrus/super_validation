@@ -14,7 +14,7 @@ class SuperValidation extends SuperValidationA {
   final String initalText;
 
   SuperValidation(this.validationFunc, {this.initalText = ''}) {
-    validation = (validationFunc(initalText));
+    validation = validationFunc(initalText);
   }
   @override
   String? get validation => _validation;

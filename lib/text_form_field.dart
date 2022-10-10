@@ -603,22 +603,32 @@ class _TextFieldSuperValidationState extends State<TextFieldSuperValidation> {
   String formatText(String event) {
     String controllerText = controller.text;
     String formattedText = controllerText;
-
-    //
-    for (var formatter in widget.inputFormatters ?? []) {
-      formattedText = formatter
-          .formatEditUpdate(
-            TextEditingValue(
-              text: formattedText,
-              selection: controller.selection,
-            ),
-            TextEditingValue(
-              text: event,
-              selection: TextSelection.collapsed(offset: formattedText.length),
-            ),
-          )
-          .text;
+    var value = widget.inputFormatters?.fold<TextEditingValue>(
+      TextEditingValue(
+        text: event,
+        selection: TextSelection.collapsed(offset: event.length),
+      ),
+      (TextEditingValue newValue, TextInputFormatter formatter) =>
+          formatter.formatEditUpdate(controller.value, newValue),
+    );
+    if (value != null) {
+      formattedText = value.text;
     }
+    // //
+    // for (var formatter in widget.inputFormatters ?? []) {
+    //   formattedText = formatter
+    //       .formatEditUpdate(
+    //         TextEditingValue(
+    //           text: formattedText,
+    //           selection: controller.selection,
+    //         ),
+    //         TextEditingValue(
+    //           text: event,
+    //           selection: TextSelection.collapsed(offset: formattedText.length),
+    //         ),
+    //       )
+    //       .text;
+    // }
     if (formattedText == controllerText) {
       formattedText = event;
     }
