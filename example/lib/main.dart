@@ -152,10 +152,18 @@ class TestContent extends StatelessWidget {
                   PercentInputFormatter(defaultValue: 0, mantissaLength: 1),
                   ZeroPercentFormatter()
                 ],
+                decoration: InputDecoration(
+                  labelText: 'Number',
+                  suffix: IconButton(
+                      onPressed: () {
+                        context.read<TestBloc>().numberValidation.text = '0';
+                      },
+                      icon: const Icon(Icons.clear)),
+                ),
               ),
-              TextFieldSuperValidation(
-                superValidation: context.read<TestBloc>().stringValidation,
-              ),
+              // TextFieldSuperValidation(
+              //   superValidation: context.read<TestBloc>().stringValidation,
+              // ),
               const SizedBox(
                 height: 10,
               ),

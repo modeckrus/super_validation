@@ -89,7 +89,7 @@ class TestBloc extends Bloc<TestEvent, TestState> {
     on<TestInitializeE>(_initialize);
     stringValidation.stream.listen(_listenStream);
   }
-  final SuperValidationInt numberValidation = SuperValidationInt.minMax(
+  final SuperValidationNum numberValidation = SuperValidationNum.minMax(
     min: 0,
     max: 10,
     minMessage: 'Min 0',

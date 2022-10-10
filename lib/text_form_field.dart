@@ -502,7 +502,7 @@ class _TextFieldSuperValidationState extends State<TextFieldSuperValidation> {
   @override
   void initState() {
     super.initState();
-    controller.text = formatText(superValidation.text);
+    controller.value = formatText(superValidation.text);
     controller.addListener(_onControllerChanged);
     _validationSubscription =
         superValidation.streamValidation.listen(_listenValidation);
@@ -590,48 +590,31 @@ class _TextFieldSuperValidationState extends State<TextFieldSuperValidation> {
 
   void _listenTextField(String event) {
     final hasFocus = focusNode.hasFocus;
-    String formattedText = formatText(event);
-    controller.text = formattedText;
-    controller.selection = TextSelection.collapsed(
-      offset: event.length,
-    );
+    controller.value = formatText(event);
     if (hasFocus) {
       focusNode.requestFocus();
     }
   }
 
-  String formatText(String event) {
-    String controllerText = controller.text;
-    String formattedText = controllerText;
+  TextEditingValue formatText(String event) {
     var value = widget.inputFormatters?.fold<TextEditingValue>(
-      TextEditingValue(
-        text: event,
-        selection: TextSelection.collapsed(offset: event.length),
-      ),
-      (TextEditingValue newValue, TextInputFormatter formatter) =>
-          formatter.formatEditUpdate(controller.value, newValue),
-    );
-    if (value != null) {
-      formattedText = value.text;
+          TextEditingValue(
+            text: event,
+            selection: TextSelection.collapsed(offset: event.length),
+          ),
+          (TextEditingValue newValue, TextInputFormatter formatter) {
+            final result =
+                formatter.formatEditUpdate(const TextEditingValue(), newValue);
+            return result;
+          },
+        ) ??
+        TextEditingValue(
+          text: event,
+          selection: TextSelection.collapsed(offset: event.length),
+        );
+    if (value.selection.start < 1) {
+      value = value.copyWith(selection: TextSelection.collapsed(offset: 1));
     }
-    // //
-    // for (var formatter in widget.inputFormatters ?? []) {
-    //   formattedText = formatter
-    //       .formatEditUpdate(
-    //         TextEditingValue(
-    //           text: formattedText,
-    //           selection: controller.selection,
-    //         ),
-    //         TextEditingValue(
-    //           text: event,
-    //           selection: TextSelection.collapsed(offset: formattedText.length),
-    //         ),
-    //       )
-    //       .text;
-    // }
-    if (formattedText == controllerText) {
-      formattedText = event;
-    }
-    return formattedText;
+    return value;
   }
 }
