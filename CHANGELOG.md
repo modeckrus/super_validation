@@ -1,3 +1,6 @@
+## 0.1.0
+
+* Fix max value
 ## 0.0.9
 
 * Fixes

@@ -5,7 +5,7 @@ class SuperValidationNum extends SuperValidation {
 
   factory SuperValidationNum.minMax(
       {num min = 0,
-      num max = 100,
+      num max = double.infinity,
       ValidationFunc? validationFunc,
       String? minMessage,
       String? maxMessage}) {
