@@ -1,3 +1,4 @@
+import 'package:example/utils/percent_input_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:super_validation/super_validation.dart';
@@ -120,6 +121,7 @@ class TestContent extends StatelessWidget {
                     'string': context.read<TestBloc>().stringValidation,
                     'number': context.read<TestBloc>().numberValidation,
                     'file': context.read<TestBloc>().fileValidation,
+                    'enum': context.read<TestBloc>().enumValidation,
                   },
                   builder: (context, validation, isValid) {
                     return Text(
@@ -145,9 +147,20 @@ class TestContent extends StatelessWidget {
               TextFieldSuperValidation(
                 superValidation: context.read<TestBloc>().numberValidation,
                 keyboardType: TextInputType.number,
+                inputFormatters: [
+                  PercentInputFormatter(defaultValue: 0, mantissaLength: 1),
+                ],
               ),
               TextFieldSuperValidation(
                 superValidation: context.read<TestBloc>().stringValidation,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              DropDownEnumField<TestEnum>(
+                superValidation: context.read<TestBloc>().enumValidation,
+                items: TestEnumM.mapName,
+                autovalidateMode: AutovalidateMode.always,
               ),
               const SizedBox(
                 height: 10,
@@ -167,6 +180,7 @@ class TestContent extends StatelessWidget {
                     context.read<TestBloc>().numberValidation,
                     context.read<TestBloc>().stringValidation,
                     context.read<TestBloc>().fileValidation,
+                    context.read<TestBloc>().enumValidation,
                   ])
             ],
           );

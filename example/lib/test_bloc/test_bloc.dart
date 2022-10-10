@@ -21,6 +21,24 @@ class FileManaged extends Equatable {
   List<Object?> get props => [id, path];
 }
 
+enum TestEnum {
+  one,
+  two,
+  three,
+}
+
+extension TestEnumM on TestEnum {
+  static Map<String, TestEnum> get map => {
+        'one': TestEnum.one,
+        'two': TestEnum.two,
+        'three': TestEnum.three,
+      };
+
+  String get name => map.entries.firstWhere((e) => e.value == this).key;
+  static Map<TestEnum, String> get mapName =>
+      map.map((key, value) => MapEntry(value, key));
+}
+
 class SuperValidationFile extends SuperValidationA {
   SuperValidationFile() {
     validate();
@@ -69,25 +87,14 @@ class TestBloc extends Bloc<TestEvent, TestState> {
     on<TestValidateE>(_validate);
     on<TestSetTextE>(_setText);
     on<TestInitializeE>(_initialize);
-    numberStream.listen(_listenNumber);
     stringValidation.stream.listen(_listenStream);
   }
-  final SuperValidation numberValidation = SuperValidation((value) {
-    final number = int.tryParse(value) ?? 0;
-    if (number == 0) {
-      return 'Enter number';
-    }
-    return null;
-  });
-
-  Stream<int> get numberStream => numberValidation.stream.map((event) {
-        //Remove all non digits
-        final String digits = event.replaceAll(RegExp(r'\D'), '');
-        if (digits.isEmpty) {
-          return 0;
-        }
-        return int.tryParse(digits) ?? 0;
-      });
+  final SuperValidationInt numberValidation = SuperValidationInt.minMax(
+    min: 0,
+    max: 10,
+    minMessage: 'Min 0',
+    maxMessage: 'Max 10',
+  );
 
   final SuperValidation stringValidation = SuperValidation((value) {
     if (value.isEmpty) {
@@ -106,6 +113,8 @@ class TestBloc extends Bloc<TestEvent, TestState> {
       'file': fileValidation,
     },
   );
+  final SuperValidationEnum<TestEnum> enumValidation = SuperValidationEnum()
+    ..validation = 'Выберите один из пунктов';
 
   FutureOr<void> _text(TestTextE event, Emitter<TestState> emit) {
     emit(TextStringS(event.text, event.validation));
@@ -129,10 +138,5 @@ class TestBloc extends Bloc<TestEvent, TestState> {
   FutureOr<void> _initialize(TestInitializeE event, Emitter<TestState> emit) {
     stringValidation.text = 'Initial text';
     emit(TextStringS(numberValidation.text, numberValidation.validation));
-  }
-
-  int number = 0;
-  void _listenNumber(int event) {
-    number = event;
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -495,14 +497,17 @@ class _TextFieldSuperValidationState extends State<TextFieldSuperValidation> {
       widget.controller ?? TextEditingController();
   SuperValidation get superValidation => widget.superValidation;
   late FocusNode focusNode = widget.focusNode ?? FocusNode();
-
+  late StreamSubscription<String> _textSubscription;
+  late StreamSubscription<String?> _validationSubscription;
   @override
   void initState() {
     super.initState();
-    controller.text = superValidation.text;
+    controller.text = formatText(superValidation.text);
     controller.addListener(_onControllerChanged);
-    superValidation.streamValidation.listen(_listenValidation);
-    superValidation.textFieldStream.listen(_listenTextField);
+    _validationSubscription =
+        superValidation.streamValidation.listen(_listenValidation);
+    _textSubscription =
+        superValidation.textFieldStream.listen(_listenTextField);
   }
 
   @override
@@ -510,6 +515,8 @@ class _TextFieldSuperValidationState extends State<TextFieldSuperValidation> {
     controller.removeListener(_onControllerChanged);
     if (widget.controller == null) controller.dispose();
     if (widget.focusNode == null) focusNode.dispose();
+    _validationSubscription.cancel();
+    _textSubscription.cancel();
     super.dispose();
   }
 
@@ -583,12 +590,38 @@ class _TextFieldSuperValidationState extends State<TextFieldSuperValidation> {
 
   void _listenTextField(String event) {
     final hasFocus = focusNode.hasFocus;
-    controller.text = event;
+    String formattedText = formatText(event);
+    controller.text = formattedText;
     controller.selection = TextSelection.collapsed(
       offset: event.length,
     );
     if (hasFocus) {
       focusNode.requestFocus();
     }
+  }
+
+  String formatText(String event) {
+    String controllerText = controller.text;
+    String formattedText = controllerText;
+
+    //
+    for (var formatter in widget.inputFormatters ?? []) {
+      formattedText = formatter
+          .formatEditUpdate(
+            TextEditingValue(
+              text: formattedText,
+              selection: controller.selection,
+            ),
+            TextEditingValue(
+              text: event,
+              selection: TextSelection.collapsed(offset: formattedText.length),
+            ),
+          )
+          .text;
+    }
+    if (formattedText == controllerText) {
+      formattedText = event;
+    }
+    return formattedText;
   }
 }

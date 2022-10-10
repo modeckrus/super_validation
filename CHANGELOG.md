@@ -1,3 +1,9 @@
+## 0.0.6
+
+* Add SuperValidationEnum
+* DropDownEnumField
+* SuperValidationInt
+* SuperValidationNum
 ## 0.0.5
 
 * Fix bugs
