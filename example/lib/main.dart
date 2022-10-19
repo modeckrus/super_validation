@@ -1,5 +1,6 @@
 import 'package:example/utils/percent_input_formatter.dart';
 import 'package:example/utils/zero_input_formatter.dart';
+import 'package:example/widgets/percent_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:super_validation/super_validation.dart';
@@ -145,21 +146,9 @@ class TestContent extends StatelessWidget {
                   return const Text('No text');
                 },
               ),
-              TextFieldSuperValidation(
+              PercentFormNum(
                 superValidation: context.read<TestBloc>().numberValidation,
-                keyboardType: TextInputType.number,
-                inputFormatters: [
-                  PercentInputFormatter(defaultValue: 0, mantissaLength: 1),
-                  ZeroPercentFormatter()
-                ],
-                decoration: InputDecoration(
-                  labelText: 'Number',
-                  suffix: IconButton(
-                      onPressed: () {
-                        context.read<TestBloc>().numberValidation.text = '4.0';
-                      },
-                      icon: const Icon(Icons.clear)),
-                ),
+                labelText: 'Percent',
               ),
               // TextFieldSuperValidation(
               //   superValidation: context.read<TestBloc>().stringValidation,

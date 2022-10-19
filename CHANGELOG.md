@@ -1,5 +1,8 @@
 ## 0.1.1
 
+* Fix for percent formatter
+## 0.1.1
+
 * Fix for formatter
 ## 0.1.0
 

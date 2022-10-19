@@ -604,10 +604,16 @@ class _TextFieldSuperValidationState extends State<TextFieldSuperValidation> {
           ),
           (TextEditingValue newValue, TextInputFormatter formatter) {
             String text = controller.text;
+            TextSelection selection = controller.selection;
             if (superValidation is SuperValidationNum) {
               text = text.isEmpty ? '0.0' : text;
+              selection = selection.copyWith(
+                baseOffset: text.length,
+                extentOffset: text.length,
+              );
             }
-            TextEditingValue value = controller.value.copyWith(text: text);
+            TextEditingValue value =
+                controller.value.copyWith(text: text, selection: selection);
             final result = formatter.formatEditUpdate(value, newValue);
             return result;
           },
