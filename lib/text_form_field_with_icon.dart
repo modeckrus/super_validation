@@ -14,6 +14,8 @@ class TextFieldSuperValidationWithIcon extends StatefulWidget {
   final Widget errorIcon;
   final Widget errorSuffix;
   const TextFieldSuperValidationWithIcon({
+    this.contextMenuBuilder,
+    this.onFieldSubmitted,
     required this.superValidation,
     this.errorIcon = const Icon(Icons.error, color: Colors.red, size: 20),
     this.errorSuffix = const SizedBox(),
@@ -489,6 +491,10 @@ class TextFieldSuperValidationWithIcon extends StatefulWidget {
   ///    back button.
   final WillPopCallback? onWillPop;
 
+  final Widget Function(BuildContext, EditableTextState)? contextMenuBuilder;
+
+  final Function(String)? onFieldSubmitted;
+
   @override
   State<TextFieldSuperValidationWithIcon> createState() =>
       _TextFieldSuperValidationWithIconState();
@@ -554,6 +560,21 @@ class _TextFieldSuperValidationWithIconState
             validator: (_) {
               return superValidation.validation;
             },
+            contextMenuBuilder: widget.contextMenuBuilder,
+            obscuringCharacter: widget.obscuringCharacter,
+            obscureText: widget.obscureText,
+            autocorrect: widget.autocorrect,
+            smartDashesType: widget.smartDashesType,
+            smartQuotesType: widget.smartQuotesType,
+            enableSuggestions: widget.enableSuggestions,
+            maxLines: widget.maxLines,
+            minLines: widget.minLines,
+            expands: widget.expands,
+            maxLengthEnforcement: widget.maxLengthEnforcement,
+            maxLength: widget.maxLength,
+            onChanged: widget.onChanged,
+            onEditingComplete: widget.onEditingComplete,
+            onFieldSubmitted: widget.onFieldSubmitted,
             controller: controller,
             focusNode: focusNode,
             decoration: newDecoration,
@@ -569,18 +590,6 @@ class _TextFieldSuperValidationWithIconState
             toolbarOptions: widget.toolbarOptions,
             readOnly: widget.readOnly,
             showCursor: widget.showCursor,
-            obscureText: widget.obscureText,
-            autocorrect: widget.autocorrect,
-            smartDashesType: widget.smartDashesType,
-            smartQuotesType: widget.smartQuotesType,
-            enableSuggestions: widget.enableSuggestions,
-            maxLines: widget.maxLines,
-            minLines: widget.minLines,
-            expands: widget.expands,
-            maxLength: widget.maxLength,
-            maxLengthEnforcement: widget.maxLengthEnforcement,
-            onChanged: widget.onChanged,
-            onEditingComplete: widget.onEditingComplete,
             inputFormatters: widget.inputFormatters,
             enabled: widget.enabled,
             cursorWidth: widget.cursorWidth,
@@ -612,7 +621,8 @@ class _TextFieldSuperValidationWithIconState
                       Text(
                         snapshot.data ?? '',
                         style: widget.decoration?.errorStyle ??
-                            TextStyle(color: Theme.of(context).errorColor),
+                            TextStyle(
+                                color: Theme.of(context).colorScheme.error),
                         maxLines: decoration.errorMaxLines,
                       ),
                       widget.errorSuffix
@@ -661,7 +671,8 @@ class _TextFieldSuperValidationWithIconState
           selection: TextSelection.collapsed(offset: event.length),
         );
     if (value.selection.start < 1) {
-      value = value.copyWith(selection: TextSelection.collapsed(offset: 1));
+      value =
+          value.copyWith(selection: const TextSelection.collapsed(offset: 1));
     }
     return value;
   }
