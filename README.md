@@ -47,6 +47,14 @@ TextFieldSuperValidation(
     autovalidateMode: AutovalidateMode.onUserInteraction,
 );
 ```
+If u want set custom icon or suffix to error decoration
+```dart
+TextFieldSuperValidationWithIcon(
+      superValidation: superValidation,
+      errorIcon: Icon(Icons.error, color: Colors.red, size: 20),
+      errorSuffix: Icon(Icons.error, color: Colors.red, size: 20),
+    );
+```
 Also u can enforse set Validation text with
 
 ```dart

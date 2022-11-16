@@ -1,3 +1,6 @@
+## 0.1.3
+
+* Fix naming and add TextFieldSuperValidationWithIcon
 ## 0.1.2
 
 * Fix for percent formatter

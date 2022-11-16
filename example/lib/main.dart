@@ -118,7 +118,7 @@ class TestContent extends StatelessWidget {
           }
           return ListView(
             children: [
-              SuperValidationMultyBuilder(
+              SuperValidationMultiBuilder(
                   superValidation: {
                     'string': context.read<TestBloc>().stringValidation,
                     'number': context.read<TestBloc>().numberValidation,
@@ -164,7 +164,7 @@ class TestContent extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-              SuperValidationSimpleMultyBuilder(
+              SuperValidationSimpleMultiBuilder(
                   builder: (context, isValid) {
                     return ElevatedButton(
                       onPressed: isValid

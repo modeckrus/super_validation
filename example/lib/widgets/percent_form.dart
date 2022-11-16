@@ -21,8 +21,10 @@ class PercentFormNum extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextFieldSuperValidation(
+    return TextFieldSuperValidationWithIcon(
       superValidation: superValidation,
+      errorIcon: Icon(Icons.error, color: Colors.red, size: 20),
+      errorSuffix: Icon(Icons.error, color: Colors.red, size: 20),
       keyboardType: TextInputType.number,
       inputFormatters: <TextInputFormatter>[
         PercentInputFormatter(
