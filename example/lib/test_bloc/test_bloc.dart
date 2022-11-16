@@ -96,7 +96,8 @@ class TestBloc extends Bloc<TestEvent, TestState> {
     maxMessage: 'Max 10',
   )..text = '1';
 
-  final SuperValidation stringValidation = SuperValidation((value) {
+  final SuperValidation stringValidation =
+      SuperValidation(validationFunc: (value) {
     if (value.isEmpty) {
       return 'Please enter some text';
     }

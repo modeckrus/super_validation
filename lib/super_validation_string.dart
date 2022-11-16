@@ -10,12 +10,16 @@ typedef ValidationFunc = String? Function(String value);
 class SuperValidation extends SuperValidationA {
   String _text = '';
 
-  final ValidationFunc validationFunc;
+  ValidationFunc? validationFunc;
   final String initalText;
 
-  SuperValidation(this.validationFunc, {this.initalText = ''}) {
-    validation = validationFunc(initalText);
+  SuperValidation({this.validationFunc, this.initalText = ''}) {
+    if (validationFunc == null) {
+      return;
+    }
+    validation = validationFunc?.call(initalText);
   }
+
   @override
   String? get validation => _validation;
   String? _validation;
@@ -31,7 +35,7 @@ class SuperValidation extends SuperValidationA {
   late final StreamController<SuperValidationHelper> _controller =
       StreamController.broadcast()
         ..add(SuperValidationHelper(
-            text: initalText, validation: validationFunc(initalText)));
+            text: initalText, validation: validationFunc?.call(initalText)));
   Stream<String> get stream => _controller.stream.map((event) => event.text);
   @override
   Stream<String?> get streamValidation =>
@@ -47,13 +51,13 @@ class SuperValidation extends SuperValidationA {
   @internal
   void controllerSetText(String text) {
     _text = text;
-    _validation = validationFunc(text);
+    _validation = validationFunc?.call(text);
     _controller.add(SuperValidationHelper(text: text, validation: validation));
   }
 
   set text(String text) {
     _text = text;
-    _validation = validationFunc(text);
+    _validation = validationFunc?.call(text);
     _textFieldController.add(text);
   }
 

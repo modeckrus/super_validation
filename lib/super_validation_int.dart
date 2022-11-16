@@ -1,7 +1,8 @@
 import 'package:super_validation/super_validation.dart';
 
 class SuperValidationInt extends SuperValidation {
-  SuperValidationInt(ValidationFunc validationFunc) : super(validationFunc);
+  SuperValidationInt([ValidationFunc? validationFunc])
+      : super(validationFunc: validationFunc);
 
   factory SuperValidationInt.minMax(
       {int min = 0,

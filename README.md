@@ -3,7 +3,7 @@ Package to controll TextFormField from bloc
 ## Usage
 In test_bloc.dart
 ```dart
-final SuperValidation validation = SuperValidation((value) {
+final SuperValidation validation = SuperValidation(validationFunc: (value) {
     if (value == null || value.isEmpty) {
       return 'Please enter some text';
     }

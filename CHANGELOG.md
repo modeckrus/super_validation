@@ -1,3 +1,6 @@
+## 0.1.4
+
+* Fixes validationFunc
 ## 0.1.3
 
 * Fix naming and add TextFieldSuperValidationWithIcon
