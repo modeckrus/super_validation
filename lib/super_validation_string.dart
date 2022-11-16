@@ -8,7 +8,8 @@ import 'super_validation_a.dart';
 typedef ValidationFunc = String? Function(String value);
 
 class SuperValidation extends SuperValidationA {
-  String _text = '';
+  @protected
+  String internalText = '';
 
   ValidationFunc? validationFunc;
   final String initalText;
@@ -21,47 +22,54 @@ class SuperValidation extends SuperValidationA {
   }
 
   @override
-  String? get validation => _validation;
-  String? _validation;
+  String? get validation => internalValidation;
+  @protected
+  String? internalValidation;
   @override
   set validation(String? value) {
-    _validation = value;
-    _controller.add(SuperValidationHelper(text: _text, validation: validation));
+    internalValidation = value;
+    internalController
+        .add(SuperValidationHelper(text: internalText, validation: validation));
   }
 
-  final StreamController<String> _textFieldController =
+  @protected
+  final StreamController<String> internalTextFieldController =
       StreamController<String>.broadcast();
-  Stream<String> get textFieldStream => _textFieldController.stream;
-  late final StreamController<SuperValidationHelper> _controller =
+  Stream<String> get textFieldStream => internalTextFieldController.stream;
+  @protected
+  late final StreamController<SuperValidationHelper> internalController =
       StreamController.broadcast()
         ..add(SuperValidationHelper(
             text: initalText, validation: validationFunc?.call(initalText)));
-  Stream<String> get stream => _controller.stream.map((event) => event.text);
+  Stream<String> get stream =>
+      internalController.stream.map((event) => event.text);
   @override
   Stream<String?> get streamValidation =>
-      _controller.stream.distinct().map((event) => event.validation);
+      internalController.stream.distinct().map((event) => event.validation);
   @override
-  Stream<bool> get streamIsValid =>
-      _controller.stream.distinct().map((event) => event.validation == null);
+  Stream<bool> get streamIsValid => internalController.stream
+      .distinct()
+      .map((event) => event.validation == null);
 
   Future<void> dispose() async {
-    await _controller.close();
+    await internalController.close();
   }
 
-  @internal
+  @protected
   void controllerSetText(String text) {
-    _text = text;
-    _validation = validationFunc?.call(text);
-    _controller.add(SuperValidationHelper(text: text, validation: validation));
+    internalText = text;
+    internalValidation = validationFunc?.call(text);
+    internalController
+        .add(SuperValidationHelper(text: text, validation: validation));
   }
 
   set text(String text) {
-    _text = text;
-    _validation = validationFunc?.call(text);
-    _textFieldController.add(text);
+    internalText = text;
+    internalValidation = validationFunc?.call(text);
+    internalTextFieldController.add(text);
   }
 
-  String get text => _text;
+  String get text => internalText;
 }
 
 class SuperValidationHelper extends Equatable {

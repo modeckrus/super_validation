@@ -560,7 +560,6 @@ class _TextFieldSuperValidationWithIconState
             validator: (_) {
               return superValidation.validation;
             },
-            contextMenuBuilder: widget.contextMenuBuilder,
             obscuringCharacter: widget.obscuringCharacter,
             obscureText: widget.obscureText,
             autocorrect: widget.autocorrect,

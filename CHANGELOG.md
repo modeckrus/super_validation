@@ -1,3 +1,6 @@
+## 0.1.5
+
+* Fixes class hierarchy
 ## 0.1.4
 
 * Fixes validationFunc
