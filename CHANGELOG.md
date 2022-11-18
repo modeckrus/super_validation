@@ -1,3 +1,6 @@
+## 0.1.6
+
+* Add TypeAhead
 ## 0.1.5
 
 * Fixes class hierarchy
