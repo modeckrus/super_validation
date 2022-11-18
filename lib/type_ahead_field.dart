@@ -81,16 +81,26 @@ class TypeAheadFormFieldWithSuperValidation<T> extends StatefulWidget {
 
   @override
   State<TypeAheadFormFieldWithSuperValidation> createState() =>
-      _TypeAheadFormFieldWithSuperValidationState<T>(suggestionsCallback);
+      _TypeAheadFormFieldWithSuperValidationState<T>(
+        suggestionsCallback: suggestionsCallback,
+        onSuggestionSelected: onSuggestionSelected,
+        itemBuilder: itemBuilder,
+      );
 }
 
 class _TypeAheadFormFieldWithSuperValidationState<T>
     extends State<TypeAheadFormFieldWithSuperValidation> {
   final FutureOr<Iterable<T>> Function(String) suggestionsCallback;
+  final SuggestionSelectionCallback<T> onSuggestionSelected;
+  final ItemBuilder<T> itemBuilder;
   late final TextFieldConfiguration _textFieldConfiguration =
       buildTextFieldConfiguration();
 
-  _TypeAheadFormFieldWithSuperValidationState(this.suggestionsCallback);
+  _TypeAheadFormFieldWithSuperValidationState({
+    required this.suggestionsCallback,
+    required this.onSuggestionSelected,
+    required this.itemBuilder,
+  });
   TextEditingController get controller =>
       _textFieldConfiguration.controller ?? TextEditingController();
   SuperValidation get superValidation => widget.superValidation;
@@ -183,8 +193,8 @@ class _TypeAheadFormFieldWithSuperValidationState<T>
       debounceDuration: widget.debounceDuration,
       suggestionsBoxDecoration: widget.suggestionsBoxDecoration,
       suggestionsBoxController: widget.suggestionsBoxController,
-      onSuggestionSelected: widget.onSuggestionSelected,
-      itemBuilder: widget.itemBuilder,
+      onSuggestionSelected: onSuggestionSelected,
+      itemBuilder: itemBuilder,
       suggestionsCallback: suggestionsCallback,
       suggestionsBoxVerticalOffset: widget.suggestionsBoxVerticalOffset,
       transitionBuilder: widget.transitionBuilder,
