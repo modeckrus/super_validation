@@ -1,5 +1,7 @@
-## 0.1.8
+## 0.1.9
 
+* Fix TypeAhead
+## 0.1.8
 
 * Fix TypeAhead
 ## 0.1.7
