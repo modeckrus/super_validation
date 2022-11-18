@@ -1,3 +1,6 @@
+## 0.1.7
+
+* Fix TypeAhead
 ## 0.1.6
 
 * Add TypeAhead

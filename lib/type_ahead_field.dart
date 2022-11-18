@@ -81,13 +81,16 @@ class TypeAheadFormFieldWithSuperValidation<T> extends StatefulWidget {
 
   @override
   State<TypeAheadFormFieldWithSuperValidation> createState() =>
-      _TypeAheadFormFieldWithSuperValidationState<T>();
+      _TypeAheadFormFieldWithSuperValidationState<T>(suggestionsCallback);
 }
 
 class _TypeAheadFormFieldWithSuperValidationState<T>
     extends State<TypeAheadFormFieldWithSuperValidation> {
+  final FutureOr<Iterable<T>> Function(String) suggestionsCallback;
   late final TextFieldConfiguration _textFieldConfiguration =
       buildTextFieldConfiguration();
+
+  _TypeAheadFormFieldWithSuperValidationState(this.suggestionsCallback);
   TextEditingController get controller =>
       _textFieldConfiguration.controller ?? TextEditingController();
   SuperValidation get superValidation => widget.superValidation;
@@ -169,7 +172,7 @@ class _TypeAheadFormFieldWithSuperValidationState<T>
 
   @override
   Widget build(BuildContext context) {
-    return TypeAheadFormField(
+    return TypeAheadFormField<T>(
       textFieldConfiguration: _textFieldConfiguration,
       onSaved: widget.onSaved,
       validator: widget.validator,
@@ -182,7 +185,7 @@ class _TypeAheadFormFieldWithSuperValidationState<T>
       suggestionsBoxController: widget.suggestionsBoxController,
       onSuggestionSelected: widget.onSuggestionSelected,
       itemBuilder: widget.itemBuilder,
-      suggestionsCallback: widget.suggestionsCallback,
+      suggestionsCallback: suggestionsCallback,
       suggestionsBoxVerticalOffset: widget.suggestionsBoxVerticalOffset,
       transitionBuilder: widget.transitionBuilder,
       animationDuration: widget.animationDuration,
