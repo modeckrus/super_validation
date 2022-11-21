@@ -1,3 +1,7 @@
+## 0.1.10
+
+* Fix Streams
+* Fix Empty MultiValidationBuilder
 ## 0.1.9
 
 * Fix TypeAhead

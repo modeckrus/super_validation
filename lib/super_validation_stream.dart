@@ -14,18 +14,27 @@ class SuperValidationStream<T> {
       }
     });
   }
-  bool get isValid => superValidationMap.values.every((e) => e.isValid);
-  Stream<bool> get streamIsValid => streamValidation.map((event) {
-        bool isValid = true;
-        event.forEach((key, value) {
-          if (value != null) {
-            isValid = false;
-          }
-        });
-        return isValid;
+  bool get isValid {
+    if (superValidationMap.isEmpty) return true;
+    return superValidationMap.values.every((e) => e.isValid);
+  }
+
+  Stream<bool> get streamIsValid {
+    if (superValidationMap.isEmpty) return Stream.value(true);
+    return streamValidation.map((event) {
+      bool isValid = true;
+      event.forEach((key, value) {
+        if (value != null) {
+          isValid = false;
+        }
       });
+      return isValid;
+    });
+  }
+
   Map<T, String?> store = {};
   Stream<Map<T, String?>> get streamValidation async* {
+    if (superValidationMap.isEmpty) yield {};
     var result = List<Stream<Map<T, String?>>>.empty(growable: true);
     superValidationMap.forEach((key, value) {
       result.add(value.streamValidation.map((e) => {key: e}));

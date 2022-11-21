@@ -45,11 +45,11 @@ class SuperValidation extends SuperValidationA {
       internalController.stream.map((event) => event.text);
   @override
   Stream<String?> get streamValidation =>
-      internalController.stream.distinct().map((event) => event.validation);
+      internalController.stream.map((event) => event.validation).distinct();
   @override
   Stream<bool> get streamIsValid => internalController.stream
-      .distinct()
-      .map((event) => event.validation == null);
+      .map((event) => event.validation == null)
+      .distinct();
 
   Future<void> dispose() async {
     await internalController.close();
