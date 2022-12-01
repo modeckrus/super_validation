@@ -105,6 +105,10 @@ class TestBloc extends Bloc<TestEvent, TestState> {
   });
 
   final SuperValidationFile fileValidation = SuperValidationFile();
+  final SuperValidationEnum<String> stringEnumValidation =
+      SuperValidationEnum<String>(
+          validateFunc: (String? val) =>
+              val == null ? 'Выберите значение' : null);
 
   late final SuperValidationStream superValidationStream =
       SuperValidationStream(

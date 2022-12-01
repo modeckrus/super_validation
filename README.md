@@ -181,3 +181,37 @@ class SuperValidationFile extends SuperValidationA {
 }
 ```
 
+SuperValidationEnumBuilder - stream builder for enum(could be any thing)
+```dart
+SuperValidationEnumBuilder<String>(
+        superValidation: superValidation,
+        builder: (context, value) {
+          return ListView(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            children: values
+                .map((e) => CheckboxListTile(
+                      title: Text(e),
+                      value: value == e,
+                      onChanged: (value) {
+                        if (value == true) {
+                          superValidation.value = e;
+                        }
+                      },
+                    ))
+                .toList(),
+          );
+        });
+```
+
+
+SuperValidationTextFieldListiner - stream builder enum for textfield
+```dart
+SuperValidationTextFieldListiner<String>(
+                  transformer: (val) => val,
+                  readOnly: true,
+                  superValidation:
+                      context.read<TestBloc>().stringEnumValidation),
+```
+transformer - convert enum to string
+superValidation - SuperValidationEnum<T>

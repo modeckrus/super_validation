@@ -1,11 +1,10 @@
-import 'package:example/utils/percent_input_formatter.dart';
-import 'package:example/utils/zero_input_formatter.dart';
-import 'package:example/widgets/percent_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:super_validation/super_validation.dart';
 
 import 'test_bloc/test_bloc.dart';
+import 'widgets/check_widget.dart';
+import 'widgets/percent_form.dart';
 
 void main() {
   runApp(const MyApp());
@@ -164,6 +163,28 @@ class TestContent extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
+              TextButton(
+                  onPressed: () {
+                    final superValidation =
+                        context.read<TestBloc>().stringEnumValidation;
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Scaffold(
+                                  appBar: AppBar(),
+                                  body: CheckWidget(
+                                    superValidation: superValidation,
+                                    values: ['Привет', 'Пока'],
+                                  ),
+                                )));
+                  },
+                  child: Text('Навигация')),
+
+              SuperValidationTextFieldListiner<String>(
+                  transformer: (val) => val,
+                  readOnly: true,
+                  superValidation:
+                      context.read<TestBloc>().stringEnumValidation),
               SuperValidationSimpleMultiBuilder(
                   builder: (context, isValid) {
                     return ElevatedButton(

@@ -1,3 +1,7 @@
+## 0.1.11
+
+* Add SuperValidationEnumBuilder
+* Add SuperValidationTextFieldListiner
 ## 0.1.10
 
 * Fix Streams
