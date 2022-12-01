@@ -497,7 +497,7 @@ class _SuperValidationTextFieldListenerState<T>
       _controller = TextEditingController();
     } else {
       _controller = TextEditingController(
-          text: widget.transformer(widget.superValidation.value));
+          text: transformer(widget.superValidation.value));
     }
 
     widget.superValidation.streamValue.listen(_listiner);
