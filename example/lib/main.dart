@@ -64,7 +64,7 @@ class TestContent extends StatelessWidget {
       floatingActionButton: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          FloatingActionButton(
+          TextButton(
             child: const Icon(Icons.error),
             onPressed: () {
               context.read<TestBloc>().add(const TestValidateE(
@@ -75,7 +75,7 @@ class TestContent extends StatelessWidget {
           const SizedBox(
             width: 10,
           ),
-          FloatingActionButton(
+          TextButton(
             child: const Icon(Icons.edit),
             onPressed: () {
               context.read<TestBloc>().add(const TestSetTextE(
@@ -86,7 +86,7 @@ class TestContent extends StatelessWidget {
           const SizedBox(
             width: 10,
           ),
-          FloatingActionButton(
+          TextButton(
             child: const Icon(Icons.run_circle),
             onPressed: () {
               context.read<TestBloc>().add(const TestInitializeE());
@@ -95,7 +95,7 @@ class TestContent extends StatelessWidget {
           const SizedBox(
             width: 10,
           ),
-          FloatingActionButton(
+          TextButton(
             child: const Icon(Icons.file_copy),
             onPressed: () {
               context
@@ -180,11 +180,19 @@ class TestContent extends StatelessWidget {
                   },
                   child: Text('Навигация')),
 
-              SuperValidationTextFieldListener<String>(
-                  transformer: (val) => val,
-                  readOnly: true,
+              SuperValidationEnumBuilder<String>(
                   superValidation:
-                      context.read<TestBloc>().stringEnumValidation),
+                      context.read<TestBloc>().stringEnumValidation,
+                  builder: (context, value) {
+                    return SuperValidationTextFieldListener<String>(
+                        transformer: (val) => val ?? '',
+                        readOnly: true,
+                        decoration: InputDecoration(
+                          hintText: value == null ? 'Выбранное значение' : null,
+                        ),
+                        superValidation:
+                            context.read<TestBloc>().stringEnumValidation);
+                  }),
               SuperValidationSimpleMultiBuilder(
                   builder: (context, isValid) {
                     return ElevatedButton(

@@ -9,7 +9,7 @@ typedef SuperValidationTextFieldListenerFunc<T> = String Function(T? value);
 
 class SuperValidationTextFieldListener<T> extends StatefulWidget {
   final SuperValidationEnum<T> superValidation;
-  final SuperValidationTextFieldListenerFunc transformer;
+  final SuperValidationTextFieldListenerFunc<T> transformer;
   const SuperValidationTextFieldListener({
     required this.transformer,
     required this.superValidation,
@@ -481,15 +481,25 @@ class SuperValidationTextFieldListener<T> extends StatefulWidget {
 
   @override
   State<SuperValidationTextFieldListener> createState() =>
-      _SuperValidationTextFieldListenerState();
+      _SuperValidationTextFieldListenerState<T>(transformer);
 }
 
-class _SuperValidationTextFieldListenerState
+class _SuperValidationTextFieldListenerState<T>
     extends State<SuperValidationTextFieldListener> {
-  final TextEditingController _controller = TextEditingController();
+  final SuperValidationTextFieldListenerFunc<T> transformer;
+  late final TextEditingController _controller;
+
+  _SuperValidationTextFieldListenerState(this.transformer);
 
   @override
   void initState() {
+    if (widget.superValidation.value == null) {
+      _controller = TextEditingController();
+    } else {
+      _controller = TextEditingController(
+          text: widget.transformer(widget.superValidation.value));
+    }
+
     widget.superValidation.streamValue.listen(_listiner);
     super.initState();
   }
@@ -555,6 +565,7 @@ class _SuperValidationTextFieldListenerState
   }
 
   void _listiner(event) {
-    _controller.text = widget.transformer(event);
+    final text = transformer(event);
+    _controller.text = text;
   }
 }
