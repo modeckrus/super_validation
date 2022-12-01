@@ -1,6 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:async';
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,14 +5,12 @@ import 'dart:ui' as ui show BoxHeightStyle, BoxWidthStyle;
 
 import 'package:super_validation/super_validation.dart';
 
-import 'super_validation_string.dart';
+typedef SuperValidationTextFieldListenerFunc<T> = String Function(T? value);
 
-typedef SuperValidationTextFieldListinerFunc<T> = String Function(T? value);
-
-class SuperValidationTextFieldListiner<T> extends StatefulWidget {
+class SuperValidationTextFieldListener<T> extends StatefulWidget {
   final SuperValidationEnum<T> superValidation;
-  final SuperValidationTextFieldListinerFunc transformer;
-  const SuperValidationTextFieldListiner({
+  final SuperValidationTextFieldListenerFunc transformer;
+  const SuperValidationTextFieldListener({
     required this.transformer,
     required this.superValidation,
     super.key,
@@ -485,12 +480,12 @@ class SuperValidationTextFieldListiner<T> extends StatefulWidget {
   final WillPopCallback? onWillPop;
 
   @override
-  State<SuperValidationTextFieldListiner> createState() =>
-      _SuperValidationTextFieldListinerState();
+  State<SuperValidationTextFieldListener> createState() =>
+      _SuperValidationTextFieldListenerState();
 }
 
-class _SuperValidationTextFieldListinerState
-    extends State<SuperValidationTextFieldListiner> {
+class _SuperValidationTextFieldListenerState
+    extends State<SuperValidationTextFieldListener> {
   final TextEditingController _controller = TextEditingController();
 
   @override

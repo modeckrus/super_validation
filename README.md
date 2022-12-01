@@ -205,9 +205,9 @@ SuperValidationEnumBuilder<String>(
 ```
 
 
-SuperValidationTextFieldListiner - stream builder enum for textfield
+SuperValidationTextFieldListener - stream builder enum for textfield
 ```dart
-SuperValidationTextFieldListiner<String>(
+SuperValidationTextFieldListener<String>(
                   transformer: (val) => val,
                   readOnly: true,
                   superValidation:

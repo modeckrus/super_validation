@@ -1,3 +1,6 @@
+##0.1.12
+
+* Fix Name
 ## 0.1.11
 
 * Add SuperValidationEnumBuilder
