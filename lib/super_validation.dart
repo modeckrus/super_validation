@@ -26,4 +26,5 @@ export 'loading_builder.dart'
     show
         SuperValidationBuilderWithLoading,
         SuperValidationSimpleMultiBuilderWithLoading,
-        SuperValidationMultiBuilderWithLoading;
+        SuperValidationMultiBuilderWithLoading,
+        SuperLoadingBuilder;

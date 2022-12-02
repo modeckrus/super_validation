@@ -498,9 +498,17 @@ class _SuperValidationTextFieldListenerState<T>
       widget.controller ?? _buildController();
   TextEditingController? _controller;
   TextEditingController _buildController() {
-    _controller ??= TextEditingController();
+    _controller ??= _initializeController();
 
     return _controller!;
+  }
+
+  TextEditingController _initializeController() {
+    if (superValidation.value != null) {
+      final text = transformer(superValidation.value);
+      return TextEditingController(text: text);
+    }
+    return TextEditingController();
   }
 
   _SuperValidationTextFieldListenerState(
