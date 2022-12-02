@@ -525,7 +525,7 @@ class _SuperValidationTextFieldListenerState<T>
   Widget build(BuildContext context) {
     final child = TextFormField(
       key: widget.key,
-      controller: widget.controller,
+      controller: controller,
       decoration: widget.decoration,
       keyboardType: widget.keyboardType,
       textInputAction: widget.textInputAction,

@@ -180,16 +180,15 @@ class _TestContentState extends State<TestContent> {
                   onPressed: () {
                     final superValidation =
                         context.read<TestBloc>().stringEnumValidation;
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => Scaffold(
-                                  appBar: AppBar(),
-                                  body: CheckWidget(
-                                    superValidation: superValidation,
-                                    values: ['Привет', 'Пока'],
-                                  ),
-                                )));
+                    showModalBottomSheet(
+                        context: context,
+                        builder: (context) => Scaffold(
+                              appBar: AppBar(),
+                              body: CheckWidget(
+                                superValidation: superValidation,
+                                values: ['Привет', 'Пока'],
+                              ),
+                            ));
                   },
                   child: Text('Навигация')),
 
