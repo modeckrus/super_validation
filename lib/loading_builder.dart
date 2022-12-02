@@ -99,3 +99,22 @@ class SuperValidationMultiBuilderWithLoading<T> extends StatelessWidget {
     );
   }
 }
+
+typedef SuperLoadingBuilderFunc = Widget Function(
+    BuildContext context, bool isLoading);
+
+class SuperLoadingBuilder extends StatelessWidget {
+  final SuperLoading loading;
+  final SuperLoadingBuilderFunc builder;
+  const SuperLoadingBuilder(
+      {super.key, required this.loading, required this.builder});
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<bool>(
+        stream: loading.streamValue,
+        builder: (context, state) {
+          return builder(context, loading.value);
+        });
+  }
+}
