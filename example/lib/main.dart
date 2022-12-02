@@ -55,8 +55,21 @@ class TestProvider extends StatelessWidget {
   }
 }
 
-class TestContent extends StatelessWidget {
+class TestContent extends StatefulWidget {
   const TestContent({super.key});
+
+  @override
+  State<TestContent> createState() => _TestContentState();
+}
+
+class _TestContentState extends State<TestContent> {
+  final TextEditingController _controller = TextEditingController();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -186,6 +199,7 @@ class TestContent extends StatelessWidget {
                   builder: (context, value) {
                     return SuperValidationTextFieldListener<String>(
                         transformer: (val) => val ?? '',
+                        controller: _controller,
                         readOnly: true,
                         decoration: InputDecoration(
                           hintText: value == null ? 'Выбранное значение' : null,

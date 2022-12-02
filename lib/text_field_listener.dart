@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -5,14 +7,18 @@ import 'dart:ui' as ui show BoxHeightStyle, BoxWidthStyle;
 
 import 'package:super_validation/super_validation.dart';
 
+import 'enum_builder.dart';
+
 typedef SuperValidationTextFieldListenerFunc<T> = String Function(T? value);
 
 class SuperValidationTextFieldListener<T> extends StatefulWidget {
   final SuperValidationEnum<T> superValidation;
   final SuperValidationTextFieldListenerFunc<T> transformer;
+  final TextEditingController? controller;
   const SuperValidationTextFieldListener({
     required this.transformer,
     required this.superValidation,
+    this.controller,
     super.key,
     this.focusNode,
     this.decoration = const InputDecoration(),
@@ -481,91 +487,97 @@ class SuperValidationTextFieldListener<T> extends StatefulWidget {
 
   @override
   State<SuperValidationTextFieldListener> createState() =>
-      _SuperValidationTextFieldListenerState<T>(transformer);
+      _SuperValidationTextFieldListenerState<T>(transformer, superValidation);
 }
 
 class _SuperValidationTextFieldListenerState<T>
     extends State<SuperValidationTextFieldListener> {
   final SuperValidationTextFieldListenerFunc<T> transformer;
-  late final TextEditingController _controller;
+  final SuperValidationEnum<T> superValidation;
+  TextEditingController get controller =>
+      widget.controller ?? _buildController();
+  TextEditingController? _controller;
+  TextEditingController _buildController() {
+    _controller ??= TextEditingController();
 
-  _SuperValidationTextFieldListenerState(this.transformer);
+    return _controller!;
+  }
+
+  _SuperValidationTextFieldListenerState(
+      this.transformer, this.superValidation);
 
   @override
   void initState() {
-    if (widget.superValidation.value == null) {
-      _controller = TextEditingController();
-    } else {
-      _controller = TextEditingController(
-          text: transformer(widget.superValidation.value));
-    }
-
-    widget.superValidation.streamValue.listen(_listiner);
+    _streamSubscription = superValidation.streamValue.listen(_listiner);
     super.initState();
   }
 
+  StreamSubscription<T?>? _streamSubscription;
+
   @override
   void dispose() {
-    _controller.dispose();
+    _streamSubscription?.cancel();
+    _controller?.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final child = TextFormField(
+      key: widget.key,
+      controller: widget.controller,
+      decoration: widget.decoration,
+      keyboardType: widget.keyboardType,
+      textInputAction: widget.textInputAction,
+      textCapitalization: widget.textCapitalization,
+      style: widget.style,
+      strutStyle: widget.strutStyle,
+      textAlign: widget.textAlign,
+      textAlignVertical: widget.textAlignVertical,
+      textDirection: widget.textDirection,
+      autofocus: widget.autofocus,
+      toolbarOptions: widget.toolbarOptions,
+      readOnly: widget.readOnly,
+      showCursor: widget.showCursor,
+      obscureText: widget.obscureText,
+      autocorrect: widget.autocorrect,
+      smartDashesType: widget.smartDashesType,
+      smartQuotesType: widget.smartQuotesType,
+      enableSuggestions: widget.enableSuggestions,
+      maxLines: widget.maxLines,
+      minLines: widget.minLines,
+      expands: widget.expands,
+      maxLength: widget.maxLength,
+      maxLengthEnforcement: widget.maxLengthEnforcement,
+      onChanged: widget.onChanged,
+      onEditingComplete: widget.onEditingComplete,
+      inputFormatters: widget.inputFormatters,
+      enabled: widget.enabled,
+      cursorWidth: widget.cursorWidth,
+      cursorHeight: widget.cursorHeight,
+      cursorRadius: widget.cursorRadius,
+      cursorColor: widget.cursorColor,
+      keyboardAppearance: widget.keyboardAppearance,
+      scrollPadding: widget.scrollPadding,
+      enableInteractiveSelection: widget.enableInteractiveSelection,
+      selectionControls: widget.selectionControls,
+      onTap: widget.onTap,
+      mouseCursor: widget.mouseCursor,
+      buildCounter: widget.buildCounter,
+      scrollPhysics: widget.scrollPhysics,
+      scrollController: widget.scrollController,
+      autofillHints: widget.autofillHints,
+      restorationId: widget.restorationId,
+      enableIMEPersonalizedLearning: widget.enableIMEPersonalizedLearning,
+    );
     return Form(
       onWillPop: widget.onWillPop,
-      child: TextFormField(
-        key: widget.key,
-        controller: _controller,
-        decoration: widget.decoration,
-        keyboardType: widget.keyboardType,
-        textInputAction: widget.textInputAction,
-        textCapitalization: widget.textCapitalization,
-        style: widget.style,
-        strutStyle: widget.strutStyle,
-        textAlign: widget.textAlign,
-        textAlignVertical: widget.textAlignVertical,
-        textDirection: widget.textDirection,
-        autofocus: widget.autofocus,
-        toolbarOptions: widget.toolbarOptions,
-        readOnly: widget.readOnly,
-        showCursor: widget.showCursor,
-        obscureText: widget.obscureText,
-        autocorrect: widget.autocorrect,
-        smartDashesType: widget.smartDashesType,
-        smartQuotesType: widget.smartQuotesType,
-        enableSuggestions: widget.enableSuggestions,
-        maxLines: widget.maxLines,
-        minLines: widget.minLines,
-        expands: widget.expands,
-        maxLength: widget.maxLength,
-        maxLengthEnforcement: widget.maxLengthEnforcement,
-        onChanged: widget.onChanged,
-        onEditingComplete: widget.onEditingComplete,
-        inputFormatters: widget.inputFormatters,
-        enabled: widget.enabled,
-        cursorWidth: widget.cursorWidth,
-        cursorHeight: widget.cursorHeight,
-        cursorRadius: widget.cursorRadius,
-        cursorColor: widget.cursorColor,
-        keyboardAppearance: widget.keyboardAppearance,
-        scrollPadding: widget.scrollPadding,
-        enableInteractiveSelection: widget.enableInteractiveSelection,
-        selectionControls: widget.selectionControls,
-        onTap: widget.onTap,
-        mouseCursor: widget.mouseCursor,
-        buildCounter: widget.buildCounter,
-        scrollPhysics: widget.scrollPhysics,
-        scrollController: widget.scrollController,
-        autofillHints: widget.autofillHints,
-        restorationId: widget.restorationId,
-        enableIMEPersonalizedLearning: widget.enableIMEPersonalizedLearning,
-      ),
+      child: child,
     );
   }
 
   void _listiner(event) {
     final text = transformer(event);
-    _controller.text = text;
+    controller.text = text;
   }
 }

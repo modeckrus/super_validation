@@ -11,6 +11,7 @@ import 'super_validation_string.dart';
 
 class TextFieldSuperValidation extends StatefulWidget {
   final SuperValidation superValidation;
+
   const TextFieldSuperValidation({
     required this.superValidation,
     super.key,
@@ -493,8 +494,15 @@ class TextFieldSuperValidation extends StatefulWidget {
 class _TextFieldSuperValidationState extends State<TextFieldSuperValidation> {
   /// {@macro flutter.widgets.editableText.selectionEnabled}
   bool get selectionEnabled => widget.enableInteractiveSelection;
-  late TextEditingController controller =
-      widget.controller ?? TextEditingController();
+  TextEditingController get controller =>
+      widget.controller ?? _buildController();
+  TextEditingController? _controller;
+  TextEditingController _buildController() {
+    _controller ??= TextEditingController();
+
+    return _controller!;
+  }
+
   SuperValidation get superValidation => widget.superValidation;
   late FocusNode focusNode = widget.focusNode ?? FocusNode();
   late StreamSubscription<String> _textSubscription;
