@@ -117,6 +117,12 @@ class _TypeAheadFormFieldWithSuperValidationState<T>
         superValidation.streamValidation.listen(_listenValidation);
     _textSubscription =
         superValidation.textFieldStream.listen(_listenTextField);
+    if (widget.autovalidateMode == AutovalidateMode.always) {
+      //addpostframecallback
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _formKey.currentState?.validate();
+      });
+    }
   }
 
   @override
@@ -214,6 +220,9 @@ class _TypeAheadFormFieldWithSuperValidationState<T>
         hideKeyboard: widget.hideKeyboard,
         minCharsForSuggestions: widget.minCharsForSuggestions,
         hideKeyboardOnDrag: widget.hideKeyboardOnDrag,
+        autovalidateMode: widget.autovalidateMode,
+        getImmediateSuggestions: widget.getImmediateSuggestions,
+        enabled: widget.enabled,
       ),
     );
   }

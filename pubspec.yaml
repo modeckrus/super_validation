@@ -1,6 +1,6 @@
 name: super_validation
 description: Validation For bloc
-version: 0.1.19
+version: 0.1.20
 homepage: https://github.com/modeckrus/super_validation
 
 environment:

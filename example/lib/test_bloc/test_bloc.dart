@@ -104,6 +104,14 @@ class TestBloc extends Bloc<TestEvent, TestState> {
     return null;
   });
 
+  final SuperValidation errorValidation =
+      SuperValidation(validationFunc: (value) {
+    if (value.isEmpty) {
+      return 'Please enter some text';
+    }
+    return null;
+  });
+
   final SuperValidationFile fileValidation = SuperValidationFile();
   final SuperValidationEnum<String> stringEnumValidation =
       SuperValidationEnum<String>(

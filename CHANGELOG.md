@@ -1,3 +1,6 @@
+## 0.1.20
+
+* Fix TypeAhead
 ## 0.1.19
 
 * Fix Listener

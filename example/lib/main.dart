@@ -206,6 +206,19 @@ class _TestContentState extends State<TestContent> {
                         superValidation:
                             context.read<TestBloc>().stringEnumValidation);
                   }),
+              TypeAheadFormFieldWithSuperValidation<String>(
+                  superValidation: context.read<TestBloc>().errorValidation,
+                  onSuggestionSelected: ((suggestion) => {
+                        context.read<TestBloc>().errorValidation
+                          ..text = suggestion
+                      }),
+                  itemBuilder: (context, suggestion) {
+                    return ListTile(
+                      title: Text(suggestion),
+                    );
+                  },
+                  autovalidateMode: AutovalidateMode.always,
+                  suggestionsCallback: ((pattern) => ['Привет', 'Пока'])),
               SuperValidationSimpleMultiBuilder(
                   builder: (context, isValid) {
                     return ElevatedButton(
