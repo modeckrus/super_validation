@@ -1,3 +1,6 @@
+## 0.1.21
+
+* SuperLoadingEnumBuilder
 ## 0.1.20
 
 * Fix TypeAhead

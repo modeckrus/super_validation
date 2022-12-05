@@ -25,3 +25,32 @@ class SuperValidationEnumBuilder<T> extends StatelessWidget {
         });
   }
 }
+
+typedef SuperValidationEnumBuilderWithLoadingFunction<T> = Widget Function(
+    BuildContext context, T? value, bool isLoading);
+
+class SuperValidationEnumBuilderWithLoading<T> extends StatelessWidget {
+  final SuperValidationEnum<T> superValidation;
+  final SuperValidationEnumBuilderWithLoadingFunction<T> builder;
+  final SuperLoading loading;
+  const SuperValidationEnumBuilderWithLoading(
+      {Key? key,
+      required this.superValidation,
+      required this.builder,
+      required this.loading})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SuperLoadingBuilder(
+        loading: loading,
+        builder: (context, isLoading) {
+          return StreamBuilder<T?>(
+              stream: superValidation.streamValue,
+              initialData: superValidation.value,
+              builder: (context, snapshot) {
+                return builder(context, superValidation.value, isLoading);
+              });
+        });
+  }
+}
