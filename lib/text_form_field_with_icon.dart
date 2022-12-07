@@ -15,9 +15,9 @@ class TextFieldSuperValidationWithIcon extends StatefulWidget {
   final SuperValidation superValidation;
   final Widget errorIcon;
   final Widget errorSuffix;
-  final TextFieldValidationFunc? altValidationFunc;
+  final SuperValidationA? altValidation;
   const TextFieldSuperValidationWithIcon({
-    this.altValidationFunc,
+    this.altValidation,
     this.contextMenuBuilder,
     this.onFieldSubmitted,
     required this.superValidation,
@@ -508,19 +508,41 @@ class _TextFieldSuperValidationWithIconState
     extends State<TextFieldSuperValidationWithIcon> {
   /// {@macro flutter.widgets.editableText.selectionEnabled}
   bool get selectionEnabled => widget.enableInteractiveSelection;
-  late TextEditingController controller =
-      widget.controller ?? TextEditingController();
+  TextEditingController get controller =>
+      widget.controller ?? _buildController();
+  TextEditingController? _controller;
+  TextEditingController _buildController() {
+    _controller ??= TextEditingController();
+
+    return _controller!;
+  }
+
   SuperValidation get superValidation => widget.superValidation;
   late FocusNode focusNode = widget.focusNode ?? FocusNode();
   late StreamSubscription<String> _textSubscription;
   late StreamSubscription<String?> _validationSubscription;
+  Stream<String?> get validationStream {
+    final altValidation = widget.altValidation;
+    if (altValidation != null) {
+      return altValidation.streamValidation;
+    }
+    return superValidation.streamValidation;
+  }
+
+  String? get validationText {
+    final altValidation = widget.altValidation;
+    if (altValidation != null) {
+      return altValidation.validation;
+    }
+    return superValidation.validation;
+  }
+
   @override
   void initState() {
     super.initState();
     controller.value = formatText(superValidation.text);
     controller.addListener(_onControllerChanged);
-    _validationSubscription =
-        superValidation.streamValidation.listen(_listenValidation);
+    _validationSubscription = validationStream.listen(_listenValidation);
     _textSubscription =
         superValidation.textFieldStream.listen(_listenTextField);
   }
@@ -562,11 +584,7 @@ class _TextFieldSuperValidationWithIconState
           TextFormField(
             key: widget.key,
             validator: (txt) {
-              final altValidationFunc = widget.altValidationFunc;
-              if (altValidationFunc != null) {
-                return altValidationFunc.call(txt);
-              }
-              return superValidation.validation;
+              return validationText;
             },
             obscuringCharacter: widget.obscuringCharacter,
             obscureText: widget.obscureText,
