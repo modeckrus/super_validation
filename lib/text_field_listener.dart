@@ -16,9 +16,11 @@ class SuperValidationTextFieldListener<T> extends StatefulWidget {
   final SuperValidationTextFieldListenerFunc<T> transformer;
   final TextEditingController? controller;
   final AutovalidateMode autovalidateMode;
+  final SuperValidationA? altValidation;
   const SuperValidationTextFieldListener({
     required this.transformer,
     required this.superValidation,
+    this.altValidation,
     this.controller,
     super.key,
     this.focusNode,
@@ -518,22 +520,29 @@ class _SuperValidationTextFieldListenerState<T>
 
   @override
   void initState() {
-    _streamSubscription = superValidation.streamValue.listen(_listiner);
     super.initState();
+    _streamSubscription = superValidation.streamValue.listen(_listiner);
+    _altValidationSubscription =
+        widget.altValidation?.streamValidation.listen(_altValidationListiner);
   }
 
   StreamSubscription<T?>? _streamSubscription;
+  StreamSubscription<String?>? _altValidationSubscription;
 
   @override
   void dispose() {
     _streamSubscription?.cancel();
+    _altValidationSubscription?.cancel();
     _controller?.dispose();
     super.dispose();
   }
 
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     final child = TextFormField(
+      validator: (_) => widget.altValidation?.validation,
       key: widget.key,
       controller: controller,
       focusNode: widget.focusNode,
@@ -583,6 +592,7 @@ class _SuperValidationTextFieldListenerState<T>
       enableIMEPersonalizedLearning: widget.enableIMEPersonalizedLearning,
     );
     return Form(
+      key: _formKey,
       onWillPop: widget.onWillPop,
       child: child,
     );
@@ -591,5 +601,9 @@ class _SuperValidationTextFieldListenerState<T>
   void _listiner(event) {
     final text = transformer(event);
     controller.text = text;
+  }
+
+  void _altValidationListiner(String? event) {
+    _formKey.currentState?.validate();
   }
 }

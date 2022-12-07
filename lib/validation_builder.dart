@@ -7,13 +7,20 @@ typedef SuperValidationBuilderFunc = Widget Function(
 class SuperValidationBuilder extends StatelessWidget {
   final SuperValidationA superValidation;
   final SuperValidationBuilderFunc builder;
+  final AutovalidateMode autovalidateMode;
   const SuperValidationBuilder(
-      {super.key, required this.superValidation, required this.builder});
+      {super.key,
+      required this.superValidation,
+      required this.builder,
+      this.autovalidateMode = AutovalidateMode.disabled});
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<String?>(
         stream: superValidation.streamValidation,
+        initialData: autovalidateMode == AutovalidateMode.disabled
+            ? null
+            : superValidation.validation,
         builder: (context, snapshot) {
           return builder(
               context, superValidation.validation, superValidation.isValid);
@@ -30,12 +37,18 @@ class SuperValidationSimpleMultiBuilder extends StatelessWidget {
   late final SuperValidationStream superValidationStream =
       SuperValidationStream(superValidationMap: superValidation.asMap());
   SuperValidationSimpleMultiBuilder(
-      {super.key, required this.builder, required this.superValidation});
-
+      {super.key,
+      required this.builder,
+      required this.superValidation,
+      this.autovalidateMode = AutovalidateMode.disabled});
+  final AutovalidateMode autovalidateMode;
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<bool>(
         stream: superValidationStream.streamIsValid,
+        initialData: autovalidateMode == AutovalidateMode.disabled
+            ? false
+            : superValidationStream.isValid,
         builder: (context, snapshot) {
           final map = snapshot.data ?? false;
           return builder(context, map);

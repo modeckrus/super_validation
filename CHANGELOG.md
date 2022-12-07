@@ -1,3 +1,6 @@
+## 0.1.26
+
+* Fix alt validation for textfield with icon and listener
 ## 0.1.25
 
 * Fix alt validation for textfield with icon

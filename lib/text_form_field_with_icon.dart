@@ -643,17 +643,17 @@ class _TextFieldSuperValidationWithIconState
             restorationId: widget.restorationId,
             enableIMEPersonalizedLearning: widget.enableIMEPersonalizedLearning,
           ),
-          StreamBuilder<String?>(
-              stream: superValidation.streamValidation,
-              builder: (context, snapshot) {
-                if (snapshot.data != null) {
+          SuperValidationBuilder(
+              superValidation: widget.altValidation ?? superValidation,
+              builder: (context, validation, isValid) {
+                if (!isValid) {
                   return Row(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       widget.errorIcon,
                       Text(
-                        snapshot.data ?? '',
+                        validation ?? '',
                         style: widget.decoration?.errorStyle ??
                             TextStyle(
                                 color: Theme.of(context).colorScheme.error),
@@ -705,8 +705,7 @@ class _TextFieldSuperValidationWithIconState
           selection: TextSelection.collapsed(offset: event.length),
         );
     if (value.selection.start < 1) {
-      value =
-          value.copyWith(selection: const TextSelection.collapsed(offset: 1));
+      value = value.copyWith(selection: TextSelection.collapsed(offset: 1));
     }
     return value;
   }
