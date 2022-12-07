@@ -7,7 +7,10 @@ import 'package:super_validation/super_validation_string.dart';
 
 import 'super_validation_num.dart';
 
+typedef TextFieldValidationFunc = String? Function(String? value);
+
 class TypeAheadFormFieldWithSuperValidation<T> extends StatefulWidget {
+  final TextFieldValidationFunc? altValidationFunc;
   final SuperValidation superValidation;
   final String? initialValue;
   final bool getImmediateSuggestions;
@@ -44,6 +47,7 @@ class TypeAheadFormFieldWithSuperValidation<T> extends StatefulWidget {
   final bool hideKeyboardOnDrag;
   const TypeAheadFormFieldWithSuperValidation(
       {super.key,
+      this.altValidationFunc,
       required this.superValidation,
       this.initialValue,
       this.getImmediateSuggestions = false,
@@ -193,7 +197,13 @@ class _TypeAheadFormFieldWithSuperValidationState<T>
       child: TypeAheadFormField<T>(
         textFieldConfiguration: _textFieldConfiguration,
         onSaved: widget.onSaved,
-        validator: (_) => superValidation.validation,
+        validator: (txt) {
+          final altValidationFunc = widget.altValidationFunc;
+          if (altValidationFunc != null) {
+            return altValidationFunc.call(txt);
+          }
+          return superValidation.validation;
+        },
         errorBuilder: widget.errorBuilder,
         noItemsFoundBuilder: widget.noItemsFoundBuilder,
         loadingBuilder: widget.loadingBuilder,

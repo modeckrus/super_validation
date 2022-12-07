@@ -15,6 +15,7 @@ class SuperValidationTextFieldListener<T> extends StatefulWidget {
   final SuperValidationEnum<T> superValidation;
   final SuperValidationTextFieldListenerFunc<T> transformer;
   final TextEditingController? controller;
+  final AutovalidateMode autovalidateMode;
   const SuperValidationTextFieldListener({
     required this.transformer,
     required this.superValidation,
@@ -73,6 +74,7 @@ class SuperValidationTextFieldListener<T> extends StatefulWidget {
     this.scribbleEnabled = true,
     this.enableIMEPersonalizedLearning = true,
     this.onWillPop,
+    this.autovalidateMode = AutovalidateMode.disabled,
   })  : smartDashesType = smartDashesType ??
             (obscureText ? SmartDashesType.disabled : SmartDashesType.enabled),
         smartQuotesType = smartQuotesType ??
@@ -534,6 +536,8 @@ class _SuperValidationTextFieldListenerState<T>
     final child = TextFormField(
       key: widget.key,
       controller: controller,
+      focusNode: widget.focusNode,
+      autovalidateMode: widget.autovalidateMode,
       decoration: widget.decoration,
       keyboardType: widget.keyboardType,
       textInputAction: widget.textInputAction,

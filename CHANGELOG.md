@@ -1,3 +1,6 @@
+## 0.1.22
+
+* Add Custom Validation Func
 ## 0.1.21
 
 * SuperLoadingEnumBuilder
