@@ -117,6 +117,15 @@ class _TestContentState extends State<TestContent> {
                   .addFile(const FileManaged(id: 'id', path: 'path'));
             },
           ),
+          const SizedBox(
+            width: 10,
+          ),
+          TextButton(
+            child: const Icon(Icons.eco_rounded),
+            onPressed: () {
+              context.read<TestBloc>().stringEnumValidation.value = null;
+            },
+          ),
         ],
       ),
       body: BlocBuilder<TestBloc, TestState>(
@@ -206,6 +215,7 @@ class _TestContentState extends State<TestContent> {
                         superValidation:
                             context.read<TestBloc>().stringEnumValidation);
                   }),
+
               TypeAheadFormFieldWithSuperValidation<String>(
                   superValidation: context.read<TestBloc>().errorValidation,
                   onSuggestionSelected: ((suggestion) => {
@@ -219,6 +229,9 @@ class _TestContentState extends State<TestContent> {
                   },
                   autovalidateMode: AutovalidateMode.always,
                   suggestionsCallback: ((pattern) => ['Привет', 'Пока'])),
+              TextFieldSuperValidation(
+                  altValidation: context.read<TestBloc>().stringEnumValidation,
+                  superValidation: context.read<TestBloc>().stringValidation),
               SuperValidationSimpleMultiBuilder(
                   builder: (context, isValid) {
                     return ElevatedButton(

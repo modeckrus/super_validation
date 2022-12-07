@@ -1,3 +1,6 @@
+## 0.1.24
+
+* Fix alt validation
 ## 0.1.23
 
 * Add Alt Validation Func

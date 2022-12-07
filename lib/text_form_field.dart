@@ -12,8 +12,10 @@ import 'super_validation_string.dart';
 class TextFieldSuperValidation extends StatefulWidget {
   final SuperValidation superValidation;
   final SuperValidationA? altValidation;
+  final AutovalidateMode autovalidateMode;
   const TextFieldSuperValidation({
     required this.superValidation,
+    this.autovalidateMode = AutovalidateMode.disabled,
     this.altValidation,
     super.key,
     this.controller,
@@ -532,6 +534,12 @@ class _TextFieldSuperValidationState extends State<TextFieldSuperValidation> {
     _validationSubscription = validationStream.listen(_listenValidation);
     _textSubscription =
         superValidation.textFieldStream.listen(_listenTextField);
+    if (validationText != null &&
+        widget.autovalidateMode == AutovalidateMode.always) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _formKey.currentState?.validate();
+      });
+    }
   }
 
   @override
