@@ -16,7 +16,9 @@ class TextFieldSuperValidationWithIcon extends StatefulWidget {
   final Widget errorIcon;
   final Widget errorSuffix;
   final SuperValidationA? altValidation;
+  final AutovalidateMode? autovalidateMode;
   const TextFieldSuperValidationWithIcon({
+    this.autovalidateMode = AutovalidateMode.disabled,
     this.altValidation,
     this.contextMenuBuilder,
     this.onFieldSubmitted,
@@ -545,6 +547,12 @@ class _TextFieldSuperValidationWithIconState
     _validationSubscription = validationStream.listen(_listenValidation);
     _textSubscription =
         superValidation.textFieldStream.listen(_listenTextField);
+    if (validationText != null &&
+        widget.autovalidateMode == AutovalidateMode.always) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _formKey.currentState?.validate();
+      });
+    }
   }
 
   @override
@@ -586,6 +594,7 @@ class _TextFieldSuperValidationWithIconState
             validator: (txt) {
               return validationText;
             },
+            autovalidateMode: widget.autovalidateMode,
             obscuringCharacter: widget.obscuringCharacter,
             obscureText: widget.obscureText,
             autocorrect: widget.autocorrect,

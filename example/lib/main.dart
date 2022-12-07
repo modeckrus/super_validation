@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:super_validation/super_validation.dart';
 
@@ -230,6 +231,9 @@ class _TestContentState extends State<TestContent> {
                   autovalidateMode: AutovalidateMode.always,
                   suggestionsCallback: ((pattern) => ['Привет', 'Пока'])),
               TextFieldSuperValidation(
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp("[0-9a-zA-Z]")),
+                  ],
                   altValidation: context.read<TestBloc>().stringEnumValidation,
                   superValidation: context.read<TestBloc>().stringValidation),
               SuperValidationSimpleMultiBuilder(
