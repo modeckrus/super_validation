@@ -9,11 +9,15 @@ import 'package:super_validation/super_validation.dart';
 
 import 'super_validation_string.dart';
 
+typedef TextFieldValidationFunc = String? Function(String? value);
+
 class TextFieldSuperValidationWithIcon extends StatefulWidget {
   final SuperValidation superValidation;
   final Widget errorIcon;
   final Widget errorSuffix;
+  final TextFieldValidationFunc? altValidationFunc;
   const TextFieldSuperValidationWithIcon({
+    this.altValidationFunc,
     this.contextMenuBuilder,
     this.onFieldSubmitted,
     required this.superValidation,
@@ -557,7 +561,11 @@ class _TextFieldSuperValidationWithIconState
         children: [
           TextFormField(
             key: widget.key,
-            validator: (_) {
+            validator: (txt) {
+              final altValidationFunc = widget.altValidationFunc;
+              if (altValidationFunc != null) {
+                return altValidationFunc.call(txt);
+              }
               return superValidation.validation;
             },
             obscuringCharacter: widget.obscuringCharacter,

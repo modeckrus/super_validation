@@ -9,11 +9,14 @@ import 'package:super_validation/super_validation.dart';
 
 import 'super_validation_string.dart';
 
+typedef TextFieldValidationFunc = String? Function(String? value);
+
 class TextFieldSuperValidation extends StatefulWidget {
   final SuperValidation superValidation;
-
+  final TextFieldValidationFunc? altValidationFunc;
   const TextFieldSuperValidation({
     required this.superValidation,
+    this.altValidationFunc,
     super.key,
     this.controller,
     this.focusNode,
@@ -544,7 +547,11 @@ class _TextFieldSuperValidationState extends State<TextFieldSuperValidation> {
       onWillPop: widget.onWillPop,
       child: TextFormField(
         key: widget.key,
-        validator: (_) {
+        validator: (txt) {
+          final altValidationFunc = widget.altValidationFunc;
+          if (altValidationFunc != null) {
+            return altValidationFunc.call(txt);
+          }
           return superValidation.validation;
         },
         controller: controller,
