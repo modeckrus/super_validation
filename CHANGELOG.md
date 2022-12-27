@@ -1,3 +1,6 @@
+## 0.1.27
+
+* Add Helper Functions for super loading
 ## 0.1.26
 
 * Fix alt validation for textfield with icon and listener

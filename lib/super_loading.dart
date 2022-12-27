@@ -41,4 +41,12 @@ class SuperLoading extends SuperValidationA {
     _value = value;
     _valueController.add(value);
   }
+
+  void loading() {
+    value = true;
+  }
+
+  void loaded() {
+    value = false;
+  }
 }
