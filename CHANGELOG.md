@@ -1,3 +1,6 @@
+## 0.1.32
+
+* SuperValidation add onlyValidationOnTextChange
 ## 0.1.31
 
 * SuperValidation add onlyValidationOnTextChange
