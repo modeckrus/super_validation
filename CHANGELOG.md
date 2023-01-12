@@ -1,3 +1,7 @@
+## 0.1.28
+
+* Fix with icon
+* SuperValidation add validateOnUserInteraction
 ## 0.1.27
 
 * Add Helper Functions for super loading

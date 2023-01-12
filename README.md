@@ -215,3 +215,12 @@ SuperValidationTextFieldListener<String>(
 ```
 transformer - convert enum to string
 superValidation - SuperValidationEnum<T>
+
+For Supervalidation also work initialText and 
+validateOnUserInteraction - make textfield do not validate if text has not changed
+
+```dart
+SuperValidation(
+    validateOnUserInteraction: false,
+);
+```
