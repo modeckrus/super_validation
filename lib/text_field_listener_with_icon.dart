@@ -569,7 +569,7 @@ class _SuperValidationTextFieldListenerWithIconState<T>
           controller: controller,
           focusNode: widget.focusNode,
           autovalidateMode: widget.autovalidateMode,
-          decoration: decoration,
+          decoration: newDecoration,
           keyboardType: widget.keyboardType,
           textInputAction: widget.textInputAction,
           textCapitalization: widget.textCapitalization,
