@@ -562,6 +562,8 @@ class _SuperValidationTextFieldListenerWithIconState<T>
         errorStyle: decoration.errorStyle?.copyWith(height: 0, fontSize: 0) ??
             TextStyle(height: 0, fontSize: 0));
     final child = Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TextFormField(
           validator: (_) => widget.altValidation?.validation,
