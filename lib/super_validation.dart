@@ -29,3 +29,5 @@ export 'loading_builder.dart'
         SuperValidationSimpleMultiBuilderWithLoading,
         SuperValidationMultiBuilderWithLoading,
         SuperLoadingBuilder;
+export 'text_field_listener_with_icon.dart'
+    show SuperValidationTextFieldListenerWithIcon;
