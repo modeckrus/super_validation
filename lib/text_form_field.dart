@@ -13,7 +13,9 @@ class TextFieldSuperValidation extends StatefulWidget {
   final SuperValidation superValidation;
   final SuperValidationA? altValidation;
   final AutovalidateMode autovalidateMode;
+  final bool onlyValidationOnTextChange;
   const TextFieldSuperValidation({
+    this.onlyValidationOnTextChange = false,
     required this.superValidation,
     this.autovalidateMode = AutovalidateMode.disabled,
     this.altValidation,
@@ -553,6 +555,11 @@ class _TextFieldSuperValidationState extends State<TextFieldSuperValidation> {
   }
 
   void _onControllerChanged() {
+    if (widget.onlyValidationOnTextChange) {
+      if (controller.text == superValidation.text) {
+        return;
+      }
+    }
     superValidation.controllerSetText(controller.text);
   }
 

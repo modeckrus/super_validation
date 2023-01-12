@@ -1,3 +1,6 @@
+## 0.1.29
+
+* SuperValidation add onlyValidationOnTextChange
 ## 0.1.28
 
 * Fix with icon

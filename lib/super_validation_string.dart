@@ -13,11 +13,10 @@ class SuperValidation extends SuperValidationA {
 
   ValidationFunc? validationFunc;
   final String initalText;
-  final bool validateOnUserInteraction;
-  SuperValidation(
-      {this.validationFunc,
-      this.initalText = '',
-      this.validateOnUserInteraction = true}) {
+  SuperValidation({
+    this.validationFunc,
+    this.initalText = '',
+  }) {
     if (validationFunc == null) {
       return;
     }
@@ -60,9 +59,6 @@ class SuperValidation extends SuperValidationA {
 
   @protected
   void controllerSetText(String text) {
-    if (text == internalText && validateOnUserInteraction) {
-      return;
-    }
     internalText = text;
     internalValidation = validationFunc?.call(text);
     internalController

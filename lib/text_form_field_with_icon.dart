@@ -21,7 +21,9 @@ class TextFieldSuperValidationWithIcon extends StatefulWidget {
   final EdgeInsets? padding;
   final BoxDecoration? containerDecoration;
   final EdgeInsetsGeometry? margin;
+  final bool onlyValidationOnTextChange;
   const TextFieldSuperValidationWithIcon({
+    this.onlyValidationOnTextChange = false,
     this.margin,
     this.alignment,
     this.padding,
@@ -574,6 +576,11 @@ class _TextFieldSuperValidationWithIconState
   }
 
   void _onControllerChanged() {
+    if (widget.onlyValidationOnTextChange) {
+      if (controller.text == superValidation.text) {
+        return;
+      }
+    }
     superValidation.controllerSetText(controller.text);
   }
 

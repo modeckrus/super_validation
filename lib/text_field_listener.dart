@@ -17,7 +17,9 @@ class SuperValidationTextFieldListener<T> extends StatefulWidget {
   final TextEditingController? controller;
   final AutovalidateMode autovalidateMode;
   final SuperValidationA? altValidation;
+  final bool onlyValidationOnTextChange;
   const SuperValidationTextFieldListener({
+    this.onlyValidationOnTextChange = false,
     required this.transformer,
     required this.superValidation,
     this.altValidation,
