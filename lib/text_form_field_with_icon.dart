@@ -17,7 +17,15 @@ class TextFieldSuperValidationWithIcon extends StatefulWidget {
   final Widget errorSuffix;
   final SuperValidationA? altValidation;
   final AutovalidateMode? autovalidateMode;
+  final Alignment? alignment;
+  final EdgeInsets? padding;
+  final BoxDecoration? containerDecoration;
+  final EdgeInsetsGeometry? margin;
   const TextFieldSuperValidationWithIcon({
+    this.margin,
+    this.alignment,
+    this.padding,
+    this.containerDecoration,
     this.autovalidateMode = AutovalidateMode.disabled,
     this.altValidation,
     this.contextMenuBuilder,
@@ -647,20 +655,26 @@ class _TextFieldSuperValidationWithIconState
               superValidation: widget.altValidation ?? superValidation,
               builder: (context, validation, isValid) {
                 if (!isValid) {
-                  return Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      widget.errorIcon,
-                      Text(
-                        validation ?? '',
-                        style: widget.decoration?.errorStyle ??
-                            TextStyle(
-                                color: Theme.of(context).colorScheme.error),
-                        maxLines: decoration.errorMaxLines,
-                      ),
-                      widget.errorSuffix
-                    ],
+                  return Container(
+                    alignment: widget.alignment,
+                    padding: widget.padding,
+                    margin: widget.margin,
+                    decoration: widget.containerDecoration,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        widget.errorIcon,
+                        Text(
+                          validation ?? '',
+                          style: widget.decoration?.errorStyle ??
+                              TextStyle(
+                                  color: Theme.of(context).colorScheme.error),
+                          maxLines: decoration.errorMaxLines,
+                        ),
+                        widget.errorSuffix
+                      ],
+                    ),
                   );
                 }
                 return const SizedBox();
