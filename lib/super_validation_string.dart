@@ -72,6 +72,20 @@ class SuperValidation extends SuperValidationA {
   }
 
   String get text => internalText;
+
+  void clear({
+    bool needValidation = false,
+  }) {
+    internalText = '';
+    if (needValidation) {
+      internalValidation = validationFunc?.call(internalText);
+    } else {
+      internalValidation = null;
+    }
+    internalTextFieldController.add(internalText);
+    internalController
+        .add(SuperValidationHelper(text: text, validation: validation));
+  }
 }
 
 class SuperValidationHelper extends Equatable {
