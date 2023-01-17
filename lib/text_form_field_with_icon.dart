@@ -726,7 +726,13 @@ class _TextFieldSuperValidationWithIconState
           selection: TextSelection.collapsed(offset: event.length),
         );
     if (value.selection.start < 1) {
-      value = value.copyWith(selection: TextSelection.collapsed(offset: 1));
+      if (value.text.isEmpty) {
+        value =
+            value.copyWith(selection: const TextSelection.collapsed(offset: 0));
+      } else {
+        value =
+            value.copyWith(selection: const TextSelection.collapsed(offset: 1));
+      }
     }
     return value;
   }
