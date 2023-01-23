@@ -9,6 +9,7 @@ import 'package:super_validation/super_validation.dart';
 
 import 'enum_builder.dart';
 import 'text_field_listener.dart';
+import 'text_form_field_with_icon.dart';
 
 class SuperValidationTextFieldListenerWithIcon<T> extends StatefulWidget {
   final SuperValidationEnum<T> superValidation;
@@ -23,7 +24,9 @@ class SuperValidationTextFieldListenerWithIcon<T> extends StatefulWidget {
   final EdgeInsetsGeometry? margin;
   final Widget errorIcon;
   final Widget errorSuffix;
+  final ErrorValidationBuilder? errorValidationBuilder;
   const SuperValidationTextFieldListenerWithIcon({
+    this.errorValidationBuilder,
     this.margin,
     this.alignment,
     this.padding,
@@ -658,5 +661,30 @@ class _SuperValidationTextFieldListenerWithIconState<T>
 
   void _altValidationListiner(String? event) {
     _formKey.currentState?.validate();
+  }
+
+  ErrorValidationBuilder get errorValidationBuilder =>
+      widget.errorValidationBuilder ?? _defaultErrorValidationBuilder;
+  Widget _defaultErrorValidationBuilder(BuildContext context,
+      String? validation, Widget errorPrefix, Widget errorSuffix) {
+    return Container(
+        alignment: widget.alignment,
+        padding: widget.padding,
+        margin: widget.margin,
+        decoration: widget.containerDecoration,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            errorPrefix,
+            Expanded(
+              child: Text(
+                validation ?? '',
+                style: widget.decoration?.errorStyle ??
+                    TextStyle(color: Theme.of(context).colorScheme.error),
+              ),
+            ),
+            errorSuffix,
+          ],
+        ));
   }
 }

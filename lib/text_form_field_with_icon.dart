@@ -10,6 +10,8 @@ import 'package:super_validation/super_validation.dart';
 import 'super_validation_string.dart';
 
 typedef TextFieldValidationFunc = String? Function(String? value);
+typedef ErrorValidationBuilder = Widget Function(
+    BuildContext context, String? error, Widget errorIcon, Widget errorSuffix);
 
 class TextFieldSuperValidationWithIcon extends StatefulWidget {
   final SuperValidation superValidation;
@@ -22,75 +24,77 @@ class TextFieldSuperValidationWithIcon extends StatefulWidget {
   final BoxDecoration? containerDecoration;
   final EdgeInsetsGeometry? margin;
   final bool onlyValidationOnTextChange;
-  const TextFieldSuperValidationWithIcon({
-    this.onlyValidationOnTextChange = false,
-    this.margin,
-    this.alignment,
-    this.padding,
-    this.containerDecoration,
-    this.autovalidateMode = AutovalidateMode.disabled,
-    this.altValidation,
-    this.contextMenuBuilder,
-    this.onFieldSubmitted,
-    required this.superValidation,
-    this.errorIcon = const Icon(Icons.error, color: Colors.red, size: 20),
-    this.errorSuffix = const SizedBox(),
-    super.key,
-    this.controller,
-    this.focusNode,
-    this.decoration = const InputDecoration(),
-    TextInputType? keyboardType,
-    this.textInputAction,
-    this.textCapitalization = TextCapitalization.none,
-    this.style,
-    this.strutStyle,
-    this.textAlign = TextAlign.start,
-    this.textAlignVertical,
-    this.textDirection,
-    this.readOnly = false,
-    ToolbarOptions? toolbarOptions,
-    this.showCursor,
-    this.autofocus = false,
-    this.obscuringCharacter = '•',
-    this.obscureText = false,
-    this.autocorrect = true,
-    SmartDashesType? smartDashesType,
-    SmartQuotesType? smartQuotesType,
-    this.enableSuggestions = true,
-    this.maxLines = 1,
-    this.minLines,
-    this.expands = false,
-    this.maxLength,
-    this.maxLengthEnforcement,
-    this.onChanged,
-    this.onEditingComplete,
-    this.onSubmitted,
-    this.onAppPrivateCommand,
-    this.inputFormatters,
-    this.enabled,
-    this.cursorWidth = 2.0,
-    this.cursorHeight,
-    this.cursorRadius,
-    this.cursorColor,
-    this.selectionHeightStyle = ui.BoxHeightStyle.tight,
-    this.selectionWidthStyle = ui.BoxWidthStyle.tight,
-    this.keyboardAppearance,
-    this.scrollPadding = const EdgeInsets.all(20.0),
-    this.dragStartBehavior = DragStartBehavior.start,
-    bool? enableInteractiveSelection,
-    this.selectionControls,
-    this.onTap,
-    this.mouseCursor,
-    this.buildCounter,
-    this.scrollController,
-    this.scrollPhysics,
-    this.autofillHints = const <String>[],
-    this.clipBehavior = Clip.hardEdge,
-    this.restorationId,
-    this.scribbleEnabled = true,
-    this.enableIMEPersonalizedLearning = true,
-    this.onWillPop,
-  })  : smartDashesType = smartDashesType ??
+  final ErrorValidationBuilder? errorValidationBuilder;
+  const TextFieldSuperValidationWithIcon(
+      {this.onlyValidationOnTextChange = false,
+      this.margin,
+      this.alignment,
+      this.padding,
+      this.containerDecoration,
+      this.autovalidateMode = AutovalidateMode.disabled,
+      this.altValidation,
+      this.contextMenuBuilder,
+      this.onFieldSubmitted,
+      required this.superValidation,
+      this.errorIcon = const Icon(Icons.error, color: Colors.red, size: 20),
+      this.errorSuffix = const SizedBox(),
+      super.key,
+      this.controller,
+      this.focusNode,
+      this.decoration = const InputDecoration(),
+      TextInputType? keyboardType,
+      this.textInputAction,
+      this.textCapitalization = TextCapitalization.none,
+      this.style,
+      this.strutStyle,
+      this.textAlign = TextAlign.start,
+      this.textAlignVertical,
+      this.textDirection,
+      this.readOnly = false,
+      ToolbarOptions? toolbarOptions,
+      this.showCursor,
+      this.autofocus = false,
+      this.obscuringCharacter = '•',
+      this.obscureText = false,
+      this.autocorrect = true,
+      SmartDashesType? smartDashesType,
+      SmartQuotesType? smartQuotesType,
+      this.enableSuggestions = true,
+      this.maxLines = 1,
+      this.minLines,
+      this.expands = false,
+      this.maxLength,
+      this.maxLengthEnforcement,
+      this.onChanged,
+      this.onEditingComplete,
+      this.onSubmitted,
+      this.onAppPrivateCommand,
+      this.inputFormatters,
+      this.enabled,
+      this.cursorWidth = 2.0,
+      this.cursorHeight,
+      this.cursorRadius,
+      this.cursorColor,
+      this.selectionHeightStyle = ui.BoxHeightStyle.tight,
+      this.selectionWidthStyle = ui.BoxWidthStyle.tight,
+      this.keyboardAppearance,
+      this.scrollPadding = const EdgeInsets.all(20.0),
+      this.dragStartBehavior = DragStartBehavior.start,
+      bool? enableInteractiveSelection,
+      this.selectionControls,
+      this.onTap,
+      this.mouseCursor,
+      this.buildCounter,
+      this.scrollController,
+      this.scrollPhysics,
+      this.autofillHints = const <String>[],
+      this.clipBehavior = Clip.hardEdge,
+      this.restorationId,
+      this.scribbleEnabled = true,
+      this.enableIMEPersonalizedLearning = true,
+      this.onWillPop,
+      this.errorValidationBuilder})
+      : smartDashesType = smartDashesType ??
             (obscureText ? SmartDashesType.disabled : SmartDashesType.enabled),
         smartQuotesType = smartQuotesType ??
             (obscureText ? SmartQuotesType.disabled : SmartQuotesType.enabled),
@@ -662,32 +666,39 @@ class _TextFieldSuperValidationWithIconState
               superValidation: widget.altValidation ?? superValidation,
               builder: (context, validation, isValid) {
                 if (!isValid) {
-                  return Container(
-                    alignment: widget.alignment,
-                    padding: widget.padding,
-                    margin: widget.margin,
-                    decoration: widget.containerDecoration,
-                    child: Text.rich(
-                      TextSpan(
-                        children: [
-                          WidgetSpan(child: widget.errorIcon),
-                          TextSpan(
-                            text: validation ?? '',
-                            style: widget.decoration?.errorStyle ??
-                                TextStyle(
-                                    color: Theme.of(context).colorScheme.error),
-                          ),
-                          WidgetSpan(child: widget.errorSuffix)
-                        ],
-                      ),
-                    ),
-                  );
+                  return errorValidationBuilder(context, validation,
+                      widget.errorIcon, widget.errorSuffix);
                 }
                 return const SizedBox();
               })
         ],
       ),
     );
+  }
+
+  ErrorValidationBuilder get errorValidationBuilder =>
+      widget.errorValidationBuilder ?? _defaultErrorValidationBuilder;
+  Widget _defaultErrorValidationBuilder(BuildContext context,
+      String? validation, Widget errorPrefix, Widget errorSuffix) {
+    return Container(
+        alignment: widget.alignment,
+        padding: widget.padding,
+        margin: widget.margin,
+        decoration: widget.containerDecoration,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            errorPrefix,
+            Expanded(
+              child: Text(
+                validation ?? '',
+                style: widget.decoration?.errorStyle ??
+                    TextStyle(color: Theme.of(context).colorScheme.error),
+              ),
+            ),
+            errorSuffix,
+          ],
+        ));
   }
 
   void _listenTextField(String event) {
