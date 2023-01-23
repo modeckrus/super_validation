@@ -236,6 +236,11 @@ class _TestContentState extends State<TestContent> {
                   ],
                   altValidation: context.read<TestBloc>().stringEnumValidation,
                   superValidation: context.read<TestBloc>().stringValidation),
+              TextFieldSuperValidationWithIcon(
+                decoration: InputDecoration(errorMaxLines: 8),
+                superValidation: SuperValidation()
+                  ..validation = "Очень длинное сообщение об ошибке" * 8,
+              ),
               SuperValidationSimpleMultiBuilder(
                   builder: (context, isValid) {
                     return ElevatedButton(

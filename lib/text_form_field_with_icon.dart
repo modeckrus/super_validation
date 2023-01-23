@@ -667,20 +667,19 @@ class _TextFieldSuperValidationWithIconState
                     padding: widget.padding,
                     margin: widget.margin,
                     decoration: widget.containerDecoration,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        widget.errorIcon,
-                        Text(
-                          validation ?? '',
-                          style: widget.decoration?.errorStyle ??
-                              TextStyle(
-                                  color: Theme.of(context).colorScheme.error),
-                          maxLines: decoration.errorMaxLines,
-                        ),
-                        widget.errorSuffix
-                      ],
+                    child: Text.rich(
+                      TextSpan(
+                        children: [
+                          WidgetSpan(child: widget.errorIcon),
+                          TextSpan(
+                            text: validation ?? '',
+                            style: widget.decoration?.errorStyle ??
+                                TextStyle(
+                                    color: Theme.of(context).colorScheme.error),
+                          ),
+                          WidgetSpan(child: widget.errorSuffix)
+                        ],
+                      ),
                     ),
                   );
                 }
