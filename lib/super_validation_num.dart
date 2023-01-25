@@ -39,6 +39,10 @@ class SuperValidationNum extends SuperValidation {
     return parseValue(text);
   }
 
+  set numValue(num value) {
+    text = value.toString();
+  }
+
   static num parseValue(String text) {
     final cleanStr = text.replaceAll(RegExp(r'[^\d.]'), '');
     return num.tryParse(cleanStr) ?? 0;

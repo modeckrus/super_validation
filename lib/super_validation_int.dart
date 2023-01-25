@@ -39,6 +39,10 @@ class SuperValidationInt extends SuperValidation {
     return parseValue(text);
   }
 
+  set numValue(int value) {
+    text = value.toString();
+  }
+
   static int parseValue(String text) {
     //Remove all non-numeric characters
     final cleanStr = text.replaceAll(RegExp(r'[^\d]'), '');
