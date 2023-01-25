@@ -17,6 +17,11 @@ class SuperLoading extends SuperValidationA {
     _validation = value;
   }
 
+  Future<void> dispose() async {
+    await _validationController.close();
+    await _valueController.close();
+  }
+
   String? _validation;
 
   final StreamController<String?> _validationController =

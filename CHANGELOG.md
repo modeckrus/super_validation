@@ -1,3 +1,6 @@
+## 0.1.38
+
+* Add dispose to superValidation
 ## 0.1.37
 
 * Icon fix

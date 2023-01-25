@@ -19,6 +19,7 @@ class SuperValidationEnum<T> extends SuperValidationA {
   StreamSubscription<T?>? _streamSubscription;
   Future<void> dispose() async {
     await _streamSubscription?.cancel();
+    await _validationController.close();
   }
 
   @override
