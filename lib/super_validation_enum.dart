@@ -4,10 +4,11 @@ import 'super_validation_a.dart';
 
 typedef SuperValidationEnumFunc<T> = String? Function(T? value);
 
-class SuperValidationEnum<T> extends SuperValidationA {
+class SuperValidationEnum<T> extends SuperValidationValue<T> {
   final SuperValidationEnumFunc<T>? validateFunc;
   SuperValidationEnum({
     this.validateFunc,
+    super.store,
   }) {
     if (validateFunc != null) {
       _streamSubscription = streamValue.listen((event) {
@@ -40,16 +41,16 @@ class SuperValidationEnum<T> extends SuperValidationA {
 
   @override
   Stream<String?> get streamValidation => _validationController.stream;
-
+  @override
   Stream<T?> get streamValue => _valueController.stream;
 
   final StreamController<T?> _valueController =
       StreamController<T?>.broadcast();
 
   T? _value;
-
+  @override
   T? get value => _value;
-
+  @override
   set value(T? value) {
     _value = value;
     _valueController.add(value);

@@ -1,3 +1,6 @@
+## 0.1.39
+
+* Add Store to superValidation
 ## 0.1.38
 
 * Add dispose to superValidation

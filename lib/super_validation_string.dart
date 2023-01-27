@@ -7,16 +7,13 @@ import 'super_validation_a.dart';
 
 typedef ValidationFunc = String? Function(String value);
 
-class SuperValidation extends SuperValidationA {
+class SuperValidation extends SuperValidationValue<String> {
   @protected
   String internalText = '';
 
   ValidationFunc? validationFunc;
   final String initalText;
-  SuperValidation({
-    this.validationFunc,
-    this.initalText = '',
-  }) {
+  SuperValidation({this.validationFunc, this.initalText = '', super.store}) {
     if (validationFunc == null) {
       return;
     }
@@ -66,12 +63,10 @@ class SuperValidation extends SuperValidationA {
   }
 
   set text(String text) {
-    internalText = text;
-    internalValidation = validationFunc?.call(text);
-    internalTextFieldController.add(text);
+    value = text;
   }
 
-  String get text => internalText;
+  String get text => value ?? '';
 
   void clear({
     bool needValidation = false,
@@ -85,6 +80,20 @@ class SuperValidation extends SuperValidationA {
     internalTextFieldController.add(internalText);
     internalController
         .add(SuperValidationHelper(text: text, validation: validation));
+  }
+
+  @override
+  Stream<String?> get streamValue => textFieldStream;
+
+  @override
+  String? get value => text;
+
+  @override
+  set value(String? text) {
+    text ??= '';
+    internalText = text;
+    internalValidation = validationFunc?.call(text);
+    internalTextFieldController.add(text);
   }
 }
 
