@@ -85,7 +85,7 @@ class SuperValidation extends SuperValidationValue<String> {
   }
 
   @override
-  Stream<String?> get streamValue => textFieldStream;
+  Stream<String?> get streamValue => stream;
 
   @override
   String? get value => internalText;

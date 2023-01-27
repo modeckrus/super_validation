@@ -1,3 +1,6 @@
+## 0.1.42
+
+* Add Store to superValidation
 ## 0.1.41
 
 * Add Store to superValidation
