@@ -49,9 +49,11 @@ class SuperValidation extends SuperValidationValue<String> {
   Stream<bool> get streamIsValid => internalController.stream
       .map((event) => event.validation == null)
       .distinct();
-
+  @override
   Future<void> dispose() async {
     await internalController.close();
+    await internalTextFieldController.close();
+    return super.dispose();
   }
 
   @protected
