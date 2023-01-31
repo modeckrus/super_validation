@@ -13,6 +13,9 @@ typedef TextFieldValidationFunc = String? Function(String? value);
 typedef ErrorValidationBuilder = Widget Function(
     BuildContext context, String? error, Widget errorIcon, Widget errorSuffix);
 
+typedef CounterWidgetBuilder = Widget Function(
+    BuildContext context, int currentLength, int maxLength);
+
 class TextFieldSuperValidationWithIcon extends StatefulWidget {
   final SuperValidation superValidation;
   final Widget errorIcon;
@@ -25,8 +28,10 @@ class TextFieldSuperValidationWithIcon extends StatefulWidget {
   final EdgeInsetsGeometry? margin;
   final bool onlyValidationOnTextChange;
   final ErrorValidationBuilder? errorValidationBuilder;
+  final CounterWidgetBuilder? counterBuilder;
   const TextFieldSuperValidationWithIcon(
       {this.onlyValidationOnTextChange = false,
+      this.counterBuilder,
       this.margin,
       this.alignment,
       this.padding,
@@ -598,9 +603,18 @@ class _TextFieldSuperValidationWithIconState
     var decoration = widget.decoration ??
         const InputDecoration()
             .applyDefaults(Theme.of(context).inputDecorationTheme);
-    var newDecoration = decoration.copyWith(
+    InputDecoration newDecoration;
+    if (widget.counterBuilder != null) {
+      newDecoration = decoration.copyWith(
+          errorStyle: decoration.errorStyle?.copyWith(height: 0, fontSize: 0) ??
+              TextStyle(height: 0, fontSize: 0),
+          counter: const SizedBox.shrink());
+    } else {
+      newDecoration = decoration.copyWith(
         errorStyle: decoration.errorStyle?.copyWith(height: 0, fontSize: 0) ??
-            TextStyle(height: 0, fontSize: 0));
+            TextStyle(height: 0, fontSize: 0),
+      );
+    }
     return Form(
       key: _formKey,
       onWillPop: widget.onWillPop,
@@ -662,18 +676,46 @@ class _TextFieldSuperValidationWithIconState
             restorationId: widget.restorationId,
             enableIMEPersonalizedLearning: widget.enableIMEPersonalizedLearning,
           ),
-          SuperValidationBuilder(
-              superValidation: widget.altValidation ?? superValidation,
-              builder: (context, validation, isValid) {
-                if (!isValid) {
-                  return errorValidationBuilder(context, validation,
-                      widget.errorIcon, widget.errorSuffix);
-                }
-                return const SizedBox();
-              })
+          needWithCounter ? validationWithCounter() : validationWithoutCounter()
         ],
       ),
     );
+  }
+
+  bool get needWithCounter {
+    return widget.counterBuilder != null && widget.maxLength != null;
+  }
+
+  Widget validationWithCounter() {
+    return SuperValidationEnumBuilder(
+        superValidation: superValidation,
+        builder: (context, text) {
+          text ??= '';
+          return Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(child: validationWithoutCounter()),
+              counterWidget(text.length, widget.maxLength ?? 0)
+            ],
+          );
+        });
+  }
+
+  Widget validationWithoutCounter() {
+    return SuperValidationBuilder(
+        superValidation: widget.altValidation ?? superValidation,
+        builder: (context, validation, isValid) {
+          if (!isValid) {
+            return errorValidationBuilder(
+                context, validation, widget.errorIcon, widget.errorSuffix);
+          }
+          return const SizedBox();
+        });
+  }
+
+  Widget counterWidget(int current, int max) {
+    return widget.counterBuilder?.call(context, current, max) ??
+        const SizedBox.shrink();
   }
 
   ErrorValidationBuilder get errorValidationBuilder =>

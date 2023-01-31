@@ -32,6 +32,12 @@ abstract class SuperValidationValue<T> extends SuperValidationA {
   Future<void> dispose() async {
     await _streamSubscription?.cancel();
   }
+
+  void save() {
+    if (store != null) {
+      store!.valueStored = value;
+    }
+  }
 }
 
 abstract class SuperValidationStore<T> {

@@ -51,7 +51,41 @@ class TestProvider extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => TestBloc(),
-      child: const TestContent(),
+      child: const TestCounterStyle(),
+    );
+  }
+}
+
+class TestCounterStyle extends StatefulWidget {
+  const TestCounterStyle({super.key});
+
+  @override
+  State<TestCounterStyle> createState() => _TestCounterStyleState();
+}
+
+class _TestCounterStyleState extends State<TestCounterStyle> {
+  final SuperValidation superValidation = SuperValidation();
+  @override
+  void initState() {
+    superValidation.validation = 'test' * 8;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(
+        children: [
+          TextFieldSuperValidationWithIcon(
+            superValidation: superValidation,
+            maxLength: 200,
+            counterBuilder: (context, currentLength, maxLength) => Text(
+              '$currentLength/$maxLength',
+              style: Theme.of(context).textTheme.caption,
+            ),
+          )
+        ],
+      ),
     );
   }
 }
