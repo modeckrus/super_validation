@@ -1,3 +1,5 @@
+## 0.1.44
+* Fix Typeahead
 ## 0.1.43
 * Add CounterBuilder
 ## 0.1.42

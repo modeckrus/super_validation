@@ -191,10 +191,10 @@ packages:
     dependency: transitive
     description:
       name: flutter_typeahead
-      sha256: "0ec56e1deac7556f3616f3cd53c9a25bf225dc8b72e9f44b5a7717e42bb467b5"
+      sha256: "090cbf580ddc36cf3dcff3c4a97dd1a916f9b22c2ed5adfa5b92931fc48e1e8b"
       url: "https://pub.dev"
     source: hosted
-    version: "4.1.1"
+    version: "4.3.4"
   flutter_web_plugins:
     dependency: transitive
     description: flutter
@@ -315,7 +315,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.1.43"
+    version: "0.1.44"
   term_glyph:
     dependency: transitive
     description:
@@ -349,5 +349,5 @@ packages:
     source: hosted
     version: "2.1.4"
 sdks:
-  dart: ">=2.18.5 <4.0.0"
+  dart: ">=2.19.0 <3.0.0"
   flutter: ">=2.0.0"
