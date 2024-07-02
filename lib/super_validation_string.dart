@@ -8,105 +8,95 @@ import 'super_validation_a.dart';
 typedef ValidationFunc = String? Function(String value);
 
 class SuperValidation extends SuperValidationValue<String> {
-  @protected
-  String internalText = '';
-
   ValidationFunc? validationFunc;
-  final String initalText;
-  SuperValidation({this.validationFunc, this.initalText = '', super.store}) {
-    if (validationFunc == null) {
-      return;
-    }
-    validation = validationFunc?.call(initalText);
-  }
 
+  SuperValidation({
+    this.validationFunc,
+  });
   @override
-  String? get validation => internalValidation;
-  @protected
-  String? internalValidation;
+  String? get validation => _validation;
   @override
   set validation(String? value) {
-    internalValidation = value;
-    internalController
-        .add(SuperValidationHelper(text: internalText, validation: validation));
-  }
-
-  @protected
-  final StreamController<String> internalTextFieldController =
-      StreamController<String>.broadcast();
-  Stream<String> get textFieldStream => internalTextFieldController.stream;
-  @protected
-  late final StreamController<SuperValidationHelper> internalController =
-      StreamController.broadcast()
-        ..add(SuperValidationHelper(
-            text: initalText, validation: validationFunc?.call(initalText)));
-  Stream<String> get stream =>
-      internalController.stream.map((event) => event.text);
-  @override
-  Stream<String?> get streamValidation =>
-      internalController.stream.map((event) => event.validation).distinct();
-  @override
-  Stream<bool> get streamIsValid => internalController.stream
-      .map((event) => event.validation == null)
-      .distinct();
-  @override
-  Future<void> dispose() async {
-    await internalController.close();
-    await internalTextFieldController.close();
-    return super.dispose();
-  }
-
-  @protected
-  void controllerSetText(String text) {
-    internalText = text;
-    internalValidation = validationFunc?.call(text);
-    internalController
-        .add(SuperValidationHelper(text: text, validation: validation));
-  }
-
-  set text(String text) {
-    value = text;
-  }
-
-  String get text => value ?? '';
-
-  void clear({
-    bool needValidation = false,
-  }) {
-    internalText = '';
-    if (needValidation) {
-      internalValidation = validationFunc?.call(internalText);
-    } else {
-      internalValidation = null;
+    if (_validation == value) {
+      return;
     }
-    internalTextFieldController.add(internalText);
-    internalController
-        .add(SuperValidationHelper(text: text, validation: validation));
+    _validation = value;
+    _validationController.add(value);
+  }
+
+  String? _validation;
+
+  @override
+  String? get value => _value;
+  String get text => _value ?? '';
+  @override
+  set value(String? value) {
+    if (_value == value) {
+      return;
+    }
+    _value = value;
+    _valueController.add(value);
+    _textFieldController.add(text);
+    validation = validationFunc?.call(text);
+  }
+
+  set text(String t) {
+    if (t.isEmpty) {
+      value = null;
+    } else {
+      value = t;
+    }
+  }
+
+  String? _value;
+
+  final StreamController<String?> _validationController =
+      StreamController.broadcast();
+
+  final StreamController<String?> _valueController =
+      StreamController.broadcast();
+  final StreamController<String> _textFieldController =
+      StreamController.broadcast();
+
+  @override
+  Future<void> dispose() {
+    final list = [
+      _validationController.close(),
+      _valueController.close(),
+      _textFieldController.close(),
+      super.dispose(),
+    ];
+    return Future.wait(list);
   }
 
   @override
-  Stream<String?> get streamValue => stream;
+  Stream<bool> get streamIsValid =>
+      _validationController.stream.map((e) => e == null);
 
   @override
-  String? get value => internalText;
+  Stream<String?> get streamValidation => _validationController.stream;
 
   @override
-  set value(String? text) {
-    text ??= '';
-    internalText = text;
-    internalValidation = validationFunc?.call(text);
-    internalTextFieldController.add(text);
+  Stream<String?> get streamValue => _valueController.stream;
+
+  Stream<String> get textFieldStream => _textFieldController.stream;
+
+  Stream<String> get stream => _validationController.stream.map((e) => e ?? '');
+
+  void controllerSetText(String controllerText) {
+    if (controllerText.isEmpty) {
+      if (_value == null) {
+        return;
+      }
+      _value = null;
+      _valueController.add(null);
+      return;
+    }
+    if (_value == controllerText) {
+      return;
+    }
+    _value = controllerText;
+    _valueController.add(controllerText);
+    validation = validationFunc?.call(controllerText);
   }
-}
-
-class SuperValidationHelper extends Equatable {
-  final String text;
-  final String? validation;
-  const SuperValidationHelper({
-    required this.text,
-    this.validation,
-  });
-
-  @override
-  List<Object?> get props => [text, validation];
 }

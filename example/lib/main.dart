@@ -51,7 +51,7 @@ class TestProvider extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => TestBloc(),
-      child: const TestCounterStyle(),
+      child: const TestContent(),
     );
   }
 }
@@ -64,11 +64,13 @@ class TestCounterStyle extends StatefulWidget {
 }
 
 class _TestCounterStyleState extends State<TestCounterStyle> {
-  final SuperValidation superValidation = SuperValidation();
+  final SuperValidation superValidation = SuperValidation()
+    ..validation = 'test' * 8;
+
   @override
-  void initState() {
-    superValidation.validation = 'test' * 8;
-    super.initState();
+  void dispose() {
+    superValidation.dispose();
+    super.dispose();
   }
 
   @override
@@ -81,7 +83,6 @@ class _TestCounterStyleState extends State<TestCounterStyle> {
             maxLength: 200,
             counterBuilder: (context, currentLength, maxLength) => Text(
               '$currentLength/$maxLength',
-              style: Theme.of(context).textTheme.caption,
             ),
           )
         ],
@@ -112,8 +113,9 @@ class _TestContentState extends State<TestContent> {
       floatingActionButton: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          TextButton(
-            child: const Icon(Icons.error),
+          TextButton.icon(
+            label: const Text('error'),
+            icon: const Icon(Icons.error),
             onPressed: () {
               context.read<TestBloc>().add(const TestValidateE(
                     validation: 'test',
@@ -123,8 +125,9 @@ class _TestContentState extends State<TestContent> {
           const SizedBox(
             width: 10,
           ),
-          TextButton(
-            child: const Icon(Icons.edit),
+          TextButton.icon(
+            label: const Text('edit'),
+            icon: const Icon(Icons.edit),
             onPressed: () {
               context.read<TestBloc>().add(const TestSetTextE(
                     text: 'text',
@@ -134,8 +137,9 @@ class _TestContentState extends State<TestContent> {
           const SizedBox(
             width: 10,
           ),
-          TextButton(
-            child: const Icon(Icons.run_circle),
+          TextButton.icon(
+            label: const Text('run'),
+            icon: const Icon(Icons.run_circle),
             onPressed: () {
               context.read<TestBloc>().add(const TestInitializeE());
             },
@@ -143,8 +147,9 @@ class _TestContentState extends State<TestContent> {
           const SizedBox(
             width: 10,
           ),
-          TextButton(
-            child: const Icon(Icons.file_copy),
+          TextButton.icon(
+            label: const Text('file'),
+            icon: const Icon(Icons.file_copy),
             onPressed: () {
               context
                   .read<TestBloc>()
@@ -155,8 +160,9 @@ class _TestContentState extends State<TestContent> {
           const SizedBox(
             width: 10,
           ),
-          TextButton(
-            child: const Icon(Icons.eco_rounded),
+          TextButton.icon(
+            label: const Text('stringEnum null'),
+            icon: const Icon(Icons.eco_rounded),
             onPressed: () {
               context.read<TestBloc>().stringEnumValidation.value = null;
             },

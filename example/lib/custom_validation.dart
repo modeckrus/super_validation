@@ -12,20 +12,19 @@ class SuperValidationAddress extends SuperValidation {
   }
   bool isSelectedFromSuggestion = false;
   String? houseNumber;
-  void address(String value, bool isSelectedFromSuggestion,
+  void address(String address, bool isSelectedFromSuggestion,
       [String? houseNumber]) {
     this.isSelectedFromSuggestion = isSelectedFromSuggestion;
     this.houseNumber = houseNumber;
-    internalText = value;
+    text = address;
   }
 
   @override
-  void controllerSetText(String text) {
-    internalText = text;
+  void controllerSetText(String address) {
+    text = address;
     isSelectedFromSuggestion = false;
     houseNumber = null;
-    internalValidation = validationFunc?.call(text);
-    internalController
-        .add(SuperValidationHelper(text: text, validation: validation));
+    validation = validationFunc?.call(text);
+    super.controllerSetText(address);
   }
 }

@@ -44,8 +44,8 @@ class SuperValidationFile extends SuperValidationA {
     validate();
   }
   void validate() {
-    if (files.length != 2) {
-      validation = 'You need to add 2 files';
+    if (files.length < 2) {
+      validation = 'You need to add at least 2 files';
     } else {
       validation = null;
     }
@@ -55,7 +55,7 @@ class SuperValidationFile extends SuperValidationA {
       StreamController.broadcast();
   @override
   Stream<bool> get streamIsValid =>
-      _streamController.stream.map((event) => event == null);
+      streamValidation.map((event) => event == null);
 
   @override
   Stream<String?> get streamValidation => _streamController.stream;

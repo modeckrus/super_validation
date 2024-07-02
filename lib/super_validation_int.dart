@@ -23,9 +23,13 @@ class SuperValidationInt extends SuperValidation {
   static String? getMinMaxMessage(
       {String? minMessage,
       String? maxMessage,
-      required int value,
+      String? nullMessage,
+      required int? value,
       required int min,
       required int max}) {
+    if (value == null) {
+      return nullMessage;
+    }
     if (value < min) {
       return minMessage;
     } else if (value > max) {
@@ -34,16 +38,21 @@ class SuperValidationInt extends SuperValidation {
     return null;
   }
 
-  int get numValue {
+  int? get numValue {
     //Remove all non-numeric and dot characters
-    return parseValue(text);
+    return parseValue(value);
   }
 
-  set numValue(int value) {
-    text = value.toString();
+  set numValue(int? n) {
+    if (n == null) {
+      value = null;
+      return;
+    }
+    value = n.toString();
   }
 
-  static int parseValue(String text) {
+  static int? parseValue(String? text) {
+    if (text == null) return null;
     //Remove all non-numeric characters
     final cleanStr = text.replaceAll(RegExp(r'[^\d]'), '');
     return int.tryParse(cleanStr) ?? 0;

@@ -561,7 +561,7 @@ class _TextFieldSuperValidationWithIconState
   @override
   void initState() {
     super.initState();
-    controller.value = formatText(superValidation.text);
+    controller.value = formatText(superValidation.value);
     controller.addListener(_onControllerChanged);
     _validationSubscription = validationStream.listen(_listenValidation);
     _textSubscription =
@@ -586,7 +586,7 @@ class _TextFieldSuperValidationWithIconState
 
   void _onControllerChanged() {
     if (widget.onlyValidationOnTextChange) {
-      if (controller.text == superValidation.text) {
+      if (controller.text == superValidation.value) {
         return;
       }
     }
@@ -607,7 +607,7 @@ class _TextFieldSuperValidationWithIconState
     if (widget.counterBuilder != null) {
       newDecoration = decoration.copyWith(
           errorStyle: decoration.errorStyle?.copyWith(height: 0, fontSize: 0) ??
-              TextStyle(height: 0, fontSize: 0),
+              const TextStyle(height: 0, fontSize: 0),
           counter: const SizedBox.shrink());
     } else {
       newDecoration = decoration.copyWith(
@@ -687,7 +687,7 @@ class _TextFieldSuperValidationWithIconState
   }
 
   Widget validationWithCounter() {
-    return SuperValidationEnumBuilder(
+    return SuperValidationEnumBuilder<String?>(
         superValidation: superValidation,
         builder: (context, text) {
           text ??= '';
@@ -751,11 +751,11 @@ class _TextFieldSuperValidationWithIconState
     }
   }
 
-  TextEditingValue formatText(String event) {
+  TextEditingValue formatText(String? event) {
     var value = widget.inputFormatters?.fold<TextEditingValue>(
           TextEditingValue(
-            text: event,
-            selection: TextSelection.collapsed(offset: event.length),
+            text: event ?? '',
+            selection: TextSelection.collapsed(offset: event?.length ?? 0),
           ),
           (TextEditingValue newValue, TextInputFormatter formatter) {
             String text = controller.text;
@@ -774,8 +774,8 @@ class _TextFieldSuperValidationWithIconState
           },
         ) ??
         TextEditingValue(
-          text: event,
-          selection: TextSelection.collapsed(offset: event.length),
+          text: event ?? '',
+          selection: TextSelection.collapsed(offset: event?.length ?? 0),
         );
     if (value.selection.start < 1) {
       if (value.text.isEmpty) {

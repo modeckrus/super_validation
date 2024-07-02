@@ -8,6 +8,7 @@ class SuperValidationNum extends SuperValidation {
       {num min = 0,
       num max = double.infinity,
       ValidationFunc? validationFunc,
+      String? nullMessage,
       String? minMessage,
       String? maxMessage}) {
     return SuperValidationNum((value) {
@@ -23,9 +24,13 @@ class SuperValidationNum extends SuperValidation {
   static String? getMinMaxMessage(
       {String? minMessage,
       String? maxMessage,
-      required num value,
+      String? nullMessage,
+      num? value,
       required num min,
       required num max}) {
+    if (value == null) {
+      return nullMessage;
+    }
     if (value < min) {
       return minMessage;
     } else if (value > max) {
@@ -34,16 +39,21 @@ class SuperValidationNum extends SuperValidation {
     return null;
   }
 
-  num get numValue {
+  num? get numValue {
     //Remove all non-numeric and dot characters
-    return parseValue(text);
+    return parseValue(value);
   }
 
-  set numValue(num value) {
-    text = value.toString();
+  set numValue(num? n) {
+    if (n == null) {
+      value = null;
+      return;
+    }
+    value = n.toString();
   }
 
-  static num parseValue(String text) {
+  static num? parseValue(String? text) {
+    if (text == null) return null;
     final cleanStr = text.replaceAll(RegExp(r'[^\d.]'), '');
     return num.tryParse(cleanStr) ?? 0;
   }
