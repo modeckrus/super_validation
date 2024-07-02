@@ -236,11 +236,11 @@ class _TestContentState extends State<TestContent> {
                               appBar: AppBar(),
                               body: CheckWidget(
                                 superValidation: superValidation,
-                                values: ['Привет', 'Пока'],
+                                values: const ['Привет', 'Пока'],
                               ),
                             ));
                   },
-                  child: Text('Навигация')),
+                  child: const Text('Навигация')),
 
               SuperValidationEnumBuilder<String>(
                   superValidation:
@@ -277,7 +277,7 @@ class _TestContentState extends State<TestContent> {
                   altValidation: context.read<TestBloc>().stringEnumValidation,
                   superValidation: context.read<TestBloc>().stringValidation),
               TextFieldSuperValidationWithIcon(
-                decoration: InputDecoration(errorMaxLines: 8),
+                decoration: const InputDecoration(errorMaxLines: 8),
                 superValidation: SuperValidation()
                   ..validation = "Очень длинное сообщение об ошибке" * 8,
               ),

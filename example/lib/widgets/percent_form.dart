@@ -10,7 +10,7 @@ class PercentFormNum extends StatelessWidget {
   final num maxValue;
   final int mantissaLength;
   final String labelText;
-  PercentFormNum({
+  const PercentFormNum({
     Key? key,
     this.defaultValue = 0,
     this.mantissaLength = 1,
@@ -23,8 +23,8 @@ class PercentFormNum extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFieldSuperValidationWithIcon(
       superValidation: superValidation,
-      errorIcon: Icon(Icons.error, color: Colors.red, size: 20),
-      errorSuffix: Icon(Icons.error, color: Colors.red, size: 20),
+      errorIcon: const Icon(Icons.error, color: Colors.red, size: 20),
+      errorSuffix: const Icon(Icons.error, color: Colors.red, size: 20),
       keyboardType: TextInputType.number,
       inputFormatters: <TextInputFormatter>[
         PercentInputFormatter(

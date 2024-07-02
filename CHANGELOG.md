@@ -1,3 +1,7 @@
+## 0.1.45
+* Fix SuperValidation null set. Now SuperValidationStore can delete value that not longer in use
+*Upgrade all dependencies
+
 ## 0.1.44
 * Fix Typeahead
 ## 0.1.43

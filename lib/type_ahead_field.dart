@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:super_validation/super_validation_string.dart';
-import 'package:flutter_typeahead/src/material/suggestions_box/suggestions_box_decoration.dart';
 import 'super_validation_num.dart';
 
 typedef TextFieldValidationFunc = String? Function(String? value);
@@ -185,7 +184,7 @@ class _TypeAheadFormFieldWithSuperValidationState<T>
               selection: TextSelection.collapsed(offset: event.length),
             );
     if (value.selection.start < 1) {
-      value = value.copyWith(selection: TextSelection.collapsed(offset: 1));
+      value = value.copyWith(selection: const TextSelection.collapsed(offset: 1));
     }
     return value;
   }

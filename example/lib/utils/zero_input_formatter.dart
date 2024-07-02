@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class ZeroPercentFormatter extends TextInputFormatter {
@@ -18,7 +17,7 @@ class ZeroPercentFormatter extends TextInputFormatter {
     if (newInt == 0 && selection.extentOffset == 1) {
       text = '.0%';
 
-      selection = TextSelection.collapsed(offset: 0);
+      selection = const TextSelection.collapsed(offset: 0);
     }
     return TextEditingValue(
       text: text,

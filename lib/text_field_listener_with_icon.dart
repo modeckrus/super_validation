@@ -7,7 +7,6 @@ import 'dart:ui' as ui show BoxHeightStyle, BoxWidthStyle;
 
 import 'package:super_validation/super_validation.dart';
 
-import 'enum_builder.dart';
 import 'text_field_listener.dart';
 import 'text_form_field_with_icon.dart';
 
@@ -406,14 +405,14 @@ class SuperValidationTextFieldListenerWithIcon<T> extends StatefulWidget {
   /// widget.
   ///
   /// If [mouseCursor] is a [MaterialStateProperty<MouseCursor>],
-  /// [MaterialStateProperty.resolve] is used for the following [MaterialState]s:
+  /// [WidgetStateProperty.resolve] is used for the following [WidgetState]s:
   ///
-  ///  * [MaterialState.error].
-  ///  * [MaterialState.hovered].
-  ///  * [MaterialState.focused].
-  ///  * [MaterialState.disabled].
+  ///  * [WidgetState.error].
+  ///  * [WidgetState.hovered].
+  ///  * [WidgetState.focused].
+  ///  * [WidgetState.disabled].
   ///
-  /// If this property is null, [MaterialStateMouseCursor.textable] will be used.
+  /// If this property is null, [WidgetStateMouseCursor.textable] will be used.
   ///
   /// The [mouseCursor] is the only property of [TextField] that controls the
   /// appearance of the mouse pointer. All other properties related to "cursor"
@@ -563,7 +562,7 @@ class _SuperValidationTextFieldListenerWithIconState<T>
             .applyDefaults(Theme.of(context).inputDecorationTheme);
     var newDecoration = decoration.copyWith(
         errorStyle: decoration.errorStyle?.copyWith(height: 0, fontSize: 0) ??
-            TextStyle(height: 0, fontSize: 0));
+            const TextStyle(height: 0, fontSize: 0));
     final child = Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
