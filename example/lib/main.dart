@@ -1,6 +1,8 @@
+import 'package:example/custom_validation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:super_validation/super_validation.dart';
 
 import 'test_bloc/test_bloc.dart';
@@ -186,6 +188,7 @@ class _TestContentState extends State<TestContent> {
                     'number': context.read<TestBloc>().numberValidation,
                     'file': context.read<TestBloc>().fileValidation,
                     'enum': context.read<TestBloc>().enumValidation,
+                    'address': context.read<TestBloc>().addressValidation,
                   },
                   builder: (context, validation, isValid) {
                     return Text(
@@ -257,19 +260,6 @@ class _TestContentState extends State<TestContent> {
                             context.read<TestBloc>().stringEnumValidation);
                   }),
 
-              TypeAheadFormFieldWithSuperValidation<String>(
-                  superValidation: context.read<TestBloc>().errorValidation,
-                  onSuggestionSelected: ((suggestion) => {
-                        context.read<TestBloc>().errorValidation
-                          ..text = suggestion
-                      }),
-                  itemBuilder: (context, suggestion) {
-                    return ListTile(
-                      title: Text(suggestion),
-                    );
-                  },
-                  autovalidateMode: AutovalidateMode.always,
-                  suggestionsCallback: ((pattern) => ['Привет', 'Пока'])),
               TextFieldSuperValidation(
                   inputFormatters: [
                     FilteringTextInputFormatter.allow(RegExp("[0-9a-zA-Z]")),
@@ -280,6 +270,9 @@ class _TestContentState extends State<TestContent> {
                 decoration: const InputDecoration(errorMaxLines: 8),
                 superValidation: SuperValidation()
                   ..validation = "Очень длинное сообщение об ошибке" * 8,
+              ),
+              AddressField(
+                addressValidation: context.read<TestBloc>().addressValidation,
               ),
               SuperValidationSimpleMultiBuilder(
                   builder: (context, isValid) {
@@ -302,6 +295,58 @@ class _TestContentState extends State<TestContent> {
           );
         },
       ),
+    );
+  }
+}
+
+class AddressField extends StatefulWidget {
+  final SuperValidationAddress addressValidation;
+  const AddressField({
+    super.key,
+    required this.addressValidation,
+  });
+
+  @override
+  State<AddressField> createState() => _AddressFieldState();
+}
+
+class _AddressFieldState extends State<AddressField> {
+  final _controller = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.addListener(() {
+      widget.addressValidation.address(_controller.text, false);
+    });
+    widget.addressValidation.textFieldStream.listen((val) {
+      _controller.text = val;
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return TypeAheadField<String>(
+      textFieldConfiguration: TextFieldConfiguration(
+          controller: _controller,
+          decoration: InputDecoration(
+            labelText: 'Address',
+          )),
+      onSuggestionSelected: (suggestion) => {
+        context.read<TestBloc>().addressValidation.address(suggestion, true)
+      },
+      itemBuilder: (context, suggestion) {
+        return ListTile(
+          title: Text(suggestion),
+        );
+      },
+      suggestionsCallback: (pattern) => widget.addressValidation.suggestion,
     );
   }
 }

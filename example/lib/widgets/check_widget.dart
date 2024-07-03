@@ -2,9 +2,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:super_validation/super_validation.dart';
+import 'package:super_validation/super_validation_a.dart';
 
 class CheckWidget extends StatelessWidget {
-  final SuperValidationEnum<String> superValidation;
+  final SuperValidationValue<String> superValidation;
   final List<String> values;
   const CheckWidget({
     Key? key,

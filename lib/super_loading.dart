@@ -13,6 +13,7 @@ class SuperLoading extends SuperValidationA {
   String? get validation => _validation;
   @override
   set validation(String? value) {
+    if (_validation == value) return;
     _validationController.add(value);
     _validation = value;
   }
@@ -43,6 +44,7 @@ class SuperLoading extends SuperValidationA {
   bool get value => _value;
 
   set value(bool value) {
+    if (_value == value) return;
     _value = value;
     _valueController.add(value);
   }

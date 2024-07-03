@@ -1,15 +1,13 @@
 import 'package:super_validation/super_validation_string.dart';
 
-typedef ValidationAddress = String? Function(
-    String value, bool isSelectedFromSuggestion,
-    [String? houseNumber]);
-
 class SuperValidationAddress extends SuperValidation {
-  final ValidationAddress validationAddress;
-  SuperValidationAddress(this.validationAddress) : super() {
-    validationFunc =
-        (_) => validationAddress(text, isSelectedFromSuggestion, houseNumber);
-  }
+  SuperValidationAddress({
+    super.validateFunc,
+    super.store,
+  });
+
+  List<String> suggestion = ['Ленина 45', 'Ленина 46', 'Ленина 47'];
+
   bool isSelectedFromSuggestion = false;
   String? houseNumber;
   void address(String address, bool isSelectedFromSuggestion,
@@ -20,11 +18,11 @@ class SuperValidationAddress extends SuperValidation {
   }
 
   @override
-  void controllerSetText(String address) {
-    text = address;
+  void controllerSetText(String controllerText) {
+    text = controllerText;
     isSelectedFromSuggestion = false;
     houseNumber = null;
-    validation = validationFunc?.call(text);
-    super.controllerSetText(address);
+    validation = validateFunc?.call(text);
+    super.controllerSetText(controllerText);
   }
 }

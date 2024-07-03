@@ -1,41 +1,20 @@
 import 'dart:async';
 
-
 import 'super_validation_a.dart';
 
-typedef ValidationFunc = String? Function(String value);
-
 class SuperValidation extends SuperValidationValue<String> {
-  ValidationFunc? validationFunc;
+  SuperValidation({super.validateFunc, super.store});
 
-  SuperValidation({
-    this.validationFunc,
-  });
-  @override
-  String? get validation => _validation;
-  @override
-  set validation(String? value) {
-    if (_validation == value) {
-      return;
-    }
-    _validation = value;
-    _validationController.add(value);
-  }
-
-  String? _validation;
-
-  @override
-  String? get value => _value;
-  String get text => _value ?? '';
+  String get text => internalValue ?? '';
   @override
   set value(String? value) {
-    if (_value == value) {
+    if (internalValue == value) {
       return;
     }
-    _value = value;
-    _valueController.add(value);
+    internalValue = value;
+    valueController.add(value);
     _textFieldController.add(text);
-    validation = validationFunc?.call(text);
+    validation = validateFunc?.call(text);
   }
 
   set text(String t) {
@@ -46,55 +25,35 @@ class SuperValidation extends SuperValidationValue<String> {
     }
   }
 
-  String? _value;
-
-  final StreamController<String?> _validationController =
-      StreamController.broadcast();
-
-  final StreamController<String?> _valueController =
-      StreamController.broadcast();
-  final StreamController<String> _textFieldController =
-      StreamController.broadcast();
-
   @override
   Future<void> dispose() {
     final list = [
-      _validationController.close(),
-      _valueController.close(),
       _textFieldController.close(),
       super.dispose(),
     ];
     return Future.wait(list);
   }
 
-  @override
-  Stream<bool> get streamIsValid =>
-      _validationController.stream.map((e) => e == null);
-
-  @override
-  Stream<String?> get streamValidation => _validationController.stream;
-
-  @override
-  Stream<String?> get streamValue => _valueController.stream;
+  final StreamController<String> _textFieldController = StreamController();
 
   Stream<String> get textFieldStream => _textFieldController.stream;
 
-  Stream<String> get stream => _validationController.stream.map((e) => e ?? '');
+  Stream<String> get stream => valueController.stream.map((e) => e ?? '');
 
   void controllerSetText(String controllerText) {
     if (controllerText.isEmpty) {
-      if (_value == null) {
+      if (internalValue == null) {
         return;
       }
-      _value = null;
-      _valueController.add(null);
+      internalValue = null;
+      valueController.add(null);
       return;
     }
-    if (_value == controllerText) {
+    if (internalValue == controllerText) {
       return;
     }
-    _value = controllerText;
-    _valueController.add(controllerText);
-    validation = validationFunc?.call(controllerText);
+    internalValue = controllerText;
+    valueController.add(controllerText);
+    validation = validateFunc?.call(controllerText);
   }
 }

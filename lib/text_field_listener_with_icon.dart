@@ -6,12 +6,13 @@ import 'package:flutter/services.dart';
 import 'dart:ui' as ui show BoxHeightStyle, BoxWidthStyle;
 
 import 'package:super_validation/super_validation.dart';
+import 'package:super_validation/super_validation_a.dart';
 
 import 'text_field_listener.dart';
 import 'text_form_field_with_icon.dart';
 
 class SuperValidationTextFieldListenerWithIcon<T> extends StatefulWidget {
-  final SuperValidationEnum<T> superValidation;
+  final SuperValidationValue<T> superValidation;
   final SuperValidationTextFieldListenerFunc<T> transformer;
   final TextEditingController? controller;
   final AutovalidateMode autovalidateMode;
@@ -513,7 +514,7 @@ class SuperValidationTextFieldListenerWithIcon<T> extends StatefulWidget {
 class _SuperValidationTextFieldListenerWithIconState<T>
     extends State<SuperValidationTextFieldListenerWithIcon> {
   final SuperValidationTextFieldListenerFunc<T> transformer;
-  final SuperValidationEnum<T> superValidation;
+  final SuperValidationValue<T> superValidation;
   TextEditingController get controller =>
       widget.controller ?? _buildController();
   TextEditingController? _controller;

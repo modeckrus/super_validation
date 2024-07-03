@@ -3,8 +3,10 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:example/custom_validation.dart';
 
 import 'package:super_validation/super_validation.dart';
+import 'package:super_validation/super_validation_a.dart';
 
 part 'test_event.dart';
 part 'test_state.dart';
@@ -88,6 +90,15 @@ class TestBloc extends Bloc<TestEvent, TestState> {
     on<TestSetTextE>(_setText);
     on<TestInitializeE>(_initialize);
     stringValidation.stream.listen(_listenStream);
+    addressValidation.validateFunc = (value) {
+      if (value == null || value.isEmpty) {
+        return 'Please enter some text';
+      }
+      if (!addressValidation.isSelectedFromSuggestion) {
+        return 'Please select from suggestion';
+      }
+      return null;
+    };
   }
   final SuperValidationNum numberValidation = SuperValidationNum.minMax(
     min: 0,
@@ -97,24 +108,24 @@ class TestBloc extends Bloc<TestEvent, TestState> {
   )..text = '1';
 
   final SuperValidation stringValidation =
-      SuperValidation(validationFunc: (value) {
-    if (value.isEmpty) {
+      SuperValidation(validateFunc: (value) {
+    if (value == null || value.isEmpty) {
       return 'Please enter some text';
     }
     return null;
   });
 
   final SuperValidation errorValidation =
-      SuperValidation(validationFunc: (value) {
-    if (value.isEmpty) {
+      SuperValidation(validateFunc: (value) {
+    if (value == null || value.isEmpty) {
       return 'Please enter some text';
     }
     return null;
   });
 
   final SuperValidationFile fileValidation = SuperValidationFile();
-  final SuperValidationEnum<String> stringEnumValidation =
-      SuperValidationEnum<String>(
+  final SuperValidationValue<String> stringEnumValidation =
+      SuperValidationValue<String>(
           validateFunc: (String? val) =>
               val == null ? 'Выберите значение' : null);
 
@@ -126,13 +137,15 @@ class TestBloc extends Bloc<TestEvent, TestState> {
       'file': fileValidation,
     },
   );
-  final SuperValidationEnum<TestEnum> enumValidation =
-      SuperValidationEnum(validateFunc: (value) {
+  final SuperValidationValue<TestEnum> enumValidation =
+      SuperValidationValue(validateFunc: (value) {
     if (value == null) {
       return 'Выберите один из пунктов';
     }
     return null;
   });
+
+  final SuperValidationAddress addressValidation = SuperValidationAddress();
 
   FutureOr<void> _text(TestTextE event, Emitter<TestState> emit) {
     emit(TextStringS(event.text, event.validation));

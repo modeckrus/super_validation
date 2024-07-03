@@ -13,12 +13,10 @@ export 'validation_builder.dart'
 export 'super_validation_a.dart' show SuperValidationA;
 export 'super_validation_string.dart' show ValidationFunc, SuperValidation;
 export 'super_validation_stream.dart' show SuperValidationStream;
-export 'super_validation_enum.dart' show SuperValidationEnum;
 export 'super_validation_num.dart' show SuperValidationNum;
 export 'super_validation_int.dart' show SuperValidationInt;
 export 'drop_down_enum_field.dart' show DropDownEnumField;
 export 'text_form_field_with_icon.dart' show TextFieldSuperValidationWithIcon;
-export 'type_ahead_field.dart' show TypeAheadFormFieldWithSuperValidation;
 export 'enum_builder.dart'
     show SuperValidationEnumBuilder, SuperValidationEnumBuilderWithLoading;
 export 'text_field_listener.dart' show SuperValidationTextFieldListener;

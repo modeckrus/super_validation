@@ -1,24 +1,27 @@
 import 'package:super_validation/super_validation.dart';
+import 'package:super_validation/super_validation_a.dart';
 
 class SuperValidationInt extends SuperValidation {
-  SuperValidationInt([ValidationFunc? validationFunc])
-      : super(validationFunc: validationFunc);
+  SuperValidationInt({super.validateFunc, super.store});
 
   factory SuperValidationInt.minMax(
       {int min = 0,
       int max = 9007199254740991,
-      ValidationFunc? validationFunc,
+      String? Function(String?)? validateFunc,
       String? minMessage,
-      String? maxMessage}) {
-    return SuperValidationInt((value) {
-      final firstValidation = getMinMaxMessage(
-          min: min,
-          max: max,
-          value: parseValue(value),
-          minMessage: minMessage,
-          maxMessage: maxMessage);
-      return firstValidation ?? validationFunc?.call(value);
-    });
+      String? maxMessage,
+      SuperValidationStore<String>? store}) {
+    return SuperValidationInt(
+        validateFunc: (value) {
+          final firstValidation = getMinMaxMessage(
+              min: min,
+              max: max,
+              value: parseValue(value),
+              minMessage: minMessage,
+              maxMessage: maxMessage);
+          return firstValidation ?? validateFunc?.call(value);
+        },
+        store: store);
   }
   static String? getMinMaxMessage(
       {String? minMessage,

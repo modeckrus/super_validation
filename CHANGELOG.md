@@ -1,3 +1,10 @@
+## 0.1.48
+*Fix Store
+## 0.1.47
+*Fix SuperValidation, SuperValidationInt, SuperValidationNum store
+## 0.1.46
+*Fix SuperValidationEnum unnecessary stream events
+
 ## 0.1.45
 * Fix SuperValidation null set. Now SuperValidationStore can delete value that not longer in use
 *Upgrade all dependencies

@@ -4,14 +4,12 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:ui' as ui show BoxHeightStyle, BoxWidthStyle;
-
-import 'package:super_validation/super_validation.dart';
-
+import 'package:super_validation/super_validation_a.dart';
 
 typedef SuperValidationTextFieldListenerFunc<T> = String Function(T? value);
 
 class SuperValidationTextFieldListener<T> extends StatefulWidget {
-  final SuperValidationEnum<T> superValidation;
+  final SuperValidationValue<T> superValidation;
   final SuperValidationTextFieldListenerFunc<T> transformer;
   final TextEditingController? controller;
   final AutovalidateMode autovalidateMode;
@@ -498,7 +496,7 @@ class SuperValidationTextFieldListener<T> extends StatefulWidget {
 class _SuperValidationTextFieldListenerState<T>
     extends State<SuperValidationTextFieldListener> {
   final SuperValidationTextFieldListenerFunc<T> transformer;
-  final SuperValidationEnum<T> superValidation;
+  final SuperValidationValue<T> superValidation;
   TextEditingController get controller =>
       widget.controller ?? _buildController();
   TextEditingController? _controller;

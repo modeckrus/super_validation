@@ -31,7 +31,7 @@ typedef SuperValidationEnumBuilderWithLoadingFunction<T> = Widget Function(
     BuildContext context, T? value, bool isLoading);
 
 class SuperValidationEnumBuilderWithLoading<T> extends StatelessWidget {
-  final SuperValidationEnum<T> superValidation;
+  final SuperValidationValue<T> superValidation;
   final SuperValidationEnumBuilderWithLoadingFunction<T> builder;
   final SuperLoading loading;
   const SuperValidationEnumBuilderWithLoading(

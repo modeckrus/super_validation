@@ -1,11 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-
-import 'super_validation_enum.dart';
+import 'package:super_validation/super_validation_a.dart';
 
 class DropDownEnumField<T> extends StatefulWidget {
-  final SuperValidationEnum<T> superValidation;
+  final SuperValidationValue<T> superValidation;
   final Map<T, String> items;
   final DropdownButtonBuilder? selectedItemBuilder;
   final T? value;
@@ -65,7 +64,7 @@ class DropDownEnumField<T> extends StatefulWidget {
 }
 
 class _DropDownEnumFieldState<T> extends State<DropDownEnumField<T>> {
-  SuperValidationEnum get superValidation => widget.superValidation;
+  SuperValidationValue<T> get superValidation => widget.superValidation;
   late StreamSubscription<String?> _validationSubscription;
   @override
   void initState() {
