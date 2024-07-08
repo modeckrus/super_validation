@@ -1,3 +1,5 @@
+## 0.1.49
+*Fix Stream Error
 ## 0.1.48
 *Fix Store
 ## 0.1.47

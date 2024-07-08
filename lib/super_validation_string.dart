@@ -34,7 +34,8 @@ class SuperValidation extends SuperValidationValue<String> {
     return Future.wait(list);
   }
 
-  final StreamController<String> _textFieldController = StreamController();
+  final StreamController<String> _textFieldController =
+      StreamController.broadcast();
 
   Stream<String> get textFieldStream => _textFieldController.stream;
 
