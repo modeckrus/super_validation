@@ -11,7 +11,7 @@ export 'validation_builder.dart'
         SuperValidationMultiBuilderFunc,
         SuperValidationMultiBuilder;
 export 'super_validation_a.dart' show SuperValidationA;
-export 'super_validation_string.dart' show ValidationFunc, SuperValidation;
+export 'super_validation_string.dart' show SuperValidation;
 export 'super_validation_stream.dart' show SuperValidationStream;
 export 'super_validation_num.dart' show SuperValidationNum;
 export 'super_validation_int.dart' show SuperValidationInt;
