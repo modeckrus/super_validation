@@ -42,17 +42,20 @@ class SuperValidation extends SuperValidationValue<String> {
   Stream<String> get stream => valueController.stream.map((e) => e ?? '');
 
   void controllerSetText(String controllerText) {
+    if (internalValue == controllerText) {
+      return;
+    }
     if (controllerText.isEmpty) {
-      if (internalValue == null) {
+      final i = internalValue;
+      if (i == null || i.isEmpty) {
         return;
       }
       internalValue = null;
       valueController.add(null);
+      validation = validateFunc?.call(controllerText);
       return;
     }
-    if (internalValue == controllerText) {
-      return;
-    }
+
     internalValue = controllerText;
     valueController.add(controllerText);
     validation = validateFunc?.call(controllerText);

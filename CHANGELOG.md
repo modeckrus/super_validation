@@ -1,3 +1,8 @@
+## 0.2.51
+***Break Change***
+*SuperValidationStore now async
+## 0.1.50
+*Fix Supervalidation null or empty value
 ## 0.1.49
 *Fix Stream Error
 ## 0.1.48

@@ -20,13 +20,16 @@ class SuperValidationValue<T> extends SuperValidationA {
     this.store,
   }) {
     if (store != null) {
-      _streamSubscription = streamValue.listen((value) {
-        store?.valueStored = value;
+      _streamSubscription = streamValue.listen((value) async {
+        await store?.setValueStored(value);
       });
-      final stored = store?.valueStored;
-      if (stored != null) {
-        value = stored;
-      }
+    }
+  }
+
+  Future<void> _initStored() async {
+    final stored = await store?.getValueStored();
+    if (stored != null) {
+      value = stored;
     }
   }
 
@@ -81,6 +84,6 @@ class SuperValidationValue<T> extends SuperValidationA {
 }
 
 abstract class SuperValidationStore<T> {
-  T? get valueStored;
-  set valueStored(T? valueStored);
+  FutureOr<T?> getValueStored();
+  FutureOr<void> setValueStored(T? valueStored);
 }
